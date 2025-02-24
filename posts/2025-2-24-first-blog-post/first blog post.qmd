@@ -1,6 +1,15 @@
 ---
-title: "first blog post"
-format: html
+title: "First blog post"
+subtitle: ""
+description:  |
+  This post is the first blog post for group 12.
+author: "BHZZ"
+date: "2025-02-24"
+image: ""
+image-alt: ""
+categories: []
+date-modified: "2025-02-24"
+draft: FALSE
 ---
 
 testing
