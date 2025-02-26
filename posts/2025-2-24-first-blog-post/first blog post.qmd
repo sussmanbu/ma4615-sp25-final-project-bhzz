@@ -1,6 +1,65 @@
 ---
-title: "first blog post"
+title: "First Blog Post"
 format: html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-testing
+## **Datasets Selection:**
+
+1.  **School Attendance by Student Group and District, 2021-2022**
+
+    <https://catalog.data.gov/dataset/school-attendance-by-student-group-and-district-2021-2022>
+
+    -   Data size: 2,019 rows and 12 columns
+
+    -   Purpose: The dataset was collected to analyze student attendance
+        rates across different public school districts in Connecticut
+        for the 2021-2022 school year.
+
+    -   Collection Method: The Connecticut State Department of Education
+        (CSDE) likely gathered this data from public schools' attendance
+        records. It includes breakdowns by student demographics,
+        districts, and statewide averages.
+
+    -   Use Case: The data helps identify attendance disparities among
+        different student groups, supporting policy-making, funding
+        allocations, and targeted interventions for at-risk students.
+        For this project, we will work on analyzing the racial
+        disparities
+
+    -   Question: Attendance differences by race/ethnicity.
+
+    -   Possible challenge: some missing data.
+
+2.  **Adult Depression (LGHC Indicator) - Catalog (data.gov),
+    2012-2018**
+
+    <https://catalog.data.gov/dataset/adult-depression-lghc-indicator-627e3>
+
+    -   Data size : 162 rows, 8 columns
+
+    -   Purpose: The data was collected as part of the California
+        Behavioral Risk Factor Surveillance Survey to answer the
+        question “Has a doctor, nurse, or other health professional EVER
+        told you that you have a depressive disorder (including
+        depression, major depression, dysthymia, or minor depression)?”
+
+    -   Collection Method: Telephone interviews
+
+    -   Are we able to clean the data: Yes
+
+    -   Main questions hope to address: Has the proportion of adults
+        diagnosed with depression changed between 2012 and 2018 based on
+        race or other factors
+
+    -   Challenges: Data and weighting come from the California
+        Department of Finance, there may be differences from national
+        reports. Also self-reporting could lead to underreporting or
+        overreporting.
+
+3.  Violence Reduction - Victim Demographics - Aggregated
+
+    [Violence Reduction - Victim Demographics - Aggregated -
+    Catalog](https://catalog.data.gov/dataset/violence-reduction-victim-demographics-aggregated)
