@@ -1,9 +1,23 @@
 ---
+<<<<<<< HEAD
 title: "First Blog Post"
 format: html
 editor: 
   markdown: 
     wrap: 72
+=======
+title: "First blog post"
+subtitle: ""
+description:  |
+  This post is the first blog post for group 12.
+author: "BHZZ"
+date: "2025-02-24"
+image: ""
+image-alt: ""
+categories: []
+date-modified: "2025-02-24"
+draft: FALSE
+>>>>>>> 6ca49ec8d39efd3f941a246beb5ffcf36f9f353a
 ---
 
 ## **Datasets Selection:**
