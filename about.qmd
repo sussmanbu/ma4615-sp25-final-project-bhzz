@@ -5,19 +5,21 @@ about:
   template: jolla
 ---
 
-
 This comes from the file `about.qmd`.
 
-This is a website for the final project for MA[46]15 Data Science with R by Team TEAMNAME.
-The members of this team are below.
+This is a website for the final project for MA\[46\]15 Data Science with R by Team BHZZ. The members of this team are below.
 
 ## Chidong Zhou
 
-Chidong is a senior student in Econ&Math and is the member for final project group 12
+Chidong is a senior student in Econ&Math and is the member for final project group 12.
 
 ## Shivani Bedre
 
 Shivani is a junior student in Mathematics & Statistics and a member of final project group 12.
+
+## Chloe He
+
+Chloe is a junior student in Data Science and Business and a member of final project group 12.
 
 <!-- Please leave in the information below -->
 
