@@ -1,11 +1,4 @@
 ---
-<<<<<<< HEAD
-title: "First Blog Post"
-format: html
-editor: 
-  markdown: 
-    wrap: 72
-=======
 title: "First blog post"
 subtitle: ""
 description:  |
@@ -17,7 +10,9 @@ image-alt: ""
 categories: []
 date-modified: "2025-02-24"
 draft: FALSE
->>>>>>> 6ca49ec8d39efd3f941a246beb5ffcf36f9f353a
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ## **Datasets Selection:**
@@ -73,7 +68,30 @@ draft: FALSE
         reports. Also self-reporting could lead to underreporting or
         overreporting.
 
-3.  Violence Reduction - Victim Demographics - Aggregated
+3.  **Violence Reduction - Victim Demographics - Aggregated**
 
     [Violence Reduction - Victim Demographics - Aggregated -
     Catalog](https://catalog.data.gov/dataset/violence-reduction-victim-demographics-aggregated)
+
+    -   Data size: 55676 row 11 col
+
+    -   Purpose: This dataset contains aggregate data on violent index
+        victimizations at the quarter level of each year (i.e., January
+        – March, April – June, July – September, October – December),
+        from 2001 to the present (1991 to present for Homicides), with a
+        focus on those related to gun violence.
+
+    -   Collection methods: The data is extracted from the Chicago
+        Police Department's (CPD) case system and synchronized with the
+        data on the Mayor's Office Violence Reduction Dashboard.
+
+    -   Are we able to clean the data: Yes
+
+    -   Main question to address: Do different ethnic groups have a
+        particular preference for certain types of crimes, and is this
+        preference related to specific geographic areas?
+
+    -   Challenge: To protect the privacy of victims, some data has been
+        obfuscated, reducing the efficiency and accuracy of the dataset.
+        There is a significant amount of "Unknown" values, which may
+        require data supplementation or cleaning.
