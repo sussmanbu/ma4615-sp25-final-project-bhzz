@@ -10,5 +10,43 @@ image-alt: ""
 categories: []
 date-modified: "2025-03-17"
 draft: FALSE
-
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
+## **Data background:**
+
+-   The data comes from the City of Chicago’s government and is
+    collected by the Chicago Police Department (CPD) to track and
+    analyze violent crimes, with a specific focus on gun violence and
+    its impact on different victim groups. The original dataset is
+    publicly available on the city's open data portal (link). The sample
+    population includes all known and reported individual victims of
+    serious violent index crimes within Chicago, aggregated and
+    anonymized to protect privacy. However, there are several issues
+    with how the data was collected. First, to protect victim anonymity,
+    any row with fewer than three incidents per quarter is removed,
+    which hides rare but critical events like domestic violence and hate
+    crimes. Also, since the dataset only includes crimes reported to
+    CPD, unreported incidents—especially among vulnerable
+    populations—are missing. Additionally, by focusing only on FBI index
+    crimes involving bodily harm, the dataset excludes other important
+    types of violence, creating gaps in understanding the full scope of
+    violence in Chicago.
+
+-   This dataset is widely used for public safety monitoring, research,
+    and supporting violence prevention initiatives. It serves as a
+    foundational source for the Mayor’s Office Violence Reduction
+    Dashboard, which provides up-to-date information on violent crime
+    trends across the city. By including details such as whether a
+    shooting occurred, demographic breakdowns, and crime
+    classifications, the data helps city officials, community
+    organizations, and researchers track violence trends, identify
+    at-risk communities, and evaluate intervention strategies. Although
+    no specific policies have been made directly from this dataset, the
+    dashboard built from it helps guide community violence prevention
+    and citywide interventions. Common questions asked about the dataset
+    include which communities are most affected by violence, how trends
+    change over time, and concerns about underreporting and data
+    completeness.
