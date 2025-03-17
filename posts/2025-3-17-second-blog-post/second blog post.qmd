@@ -1,0 +1,14 @@
+---
+title: "Second blog post"
+subtitle: ""
+description:  |
+  This post is the first blog post for group 12.
+author: "BHZZ"
+date: "2025-03-17"
+image: ""
+image-alt: ""
+categories: []
+date-modified: "2025-03-17"
+draft: FALSE
+
+---
