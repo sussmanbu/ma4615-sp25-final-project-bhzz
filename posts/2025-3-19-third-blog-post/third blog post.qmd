@@ -1,0 +1,50 @@
+---
+title: "Third blog post"
+subtitle: ""
+description:  |
+  This post is the third blog post for group 12.
+author: "BHZZ"
+date: "2025-03-21"
+image: ""
+image-alt: ""
+categories: []
+date-modified: "2025-03-21"
+draft: FALSE
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## **Data Loading and Cleaning:**
+
+-   During the data loading and cleaning process, several columns with
+    missing values marked as "UNKNOWN" were identified, including "AGE,"
+    "SEX," and "RACE." Notably, the "GUNSHOT_INJURY_I" column often
+    shows "UNKNOWN" before 2010 due to unavailable shooting data, which
+    is not treated as true missing information. The cleaning process
+    focuses primarily on "AGE," "SEX," and "RACE." Around 1,000 records
+    with two missing values—often due to suspects refusing to provide
+    demographic information—are excluded. The final dataset retains rows
+    with fewer than two missing values to ensure critical demographic
+    data is available for analysis.
+
+## **Data for Equity:**
+
+-   Applying the principles of Beneficence, Respect for Persons, and
+    Justice ensures a responsible and ethical approach to analyzing the
+    Chicago Violence Reduction Dataset. Beneficence emphasizes
+    maximizing the benefits of this dataset by using it to inform
+    violence prevention strategies while minimizing harm by avoiding
+    misinterpretation that could reinforce harmful stereotypes or
+    justify over-policing. Respect for Persons highlights the importance
+    of protecting victim privacy, acknowledging the limitations of
+    missing demographic data and ensuring that data cleaning methods do
+    not introduce bias or erase marginalized groups from analysis.
+    Justice calls for fair representation in data use, recognizing that
+    underreported crimes and the exclusion of non-index crimes create
+    gaps that could misdirect policy decisions. To uphold these
+    principles, transparency about data limitations is essential,
+    findings should be contextualized to avoid misrepresentation, and
+    the dataset should be used alongside other sources to develop
+    equitable, community-driven solutions to violence prevention in
+    Chicago.
