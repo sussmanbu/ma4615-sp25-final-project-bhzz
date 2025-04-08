@@ -316,3 +316,41 @@ grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
 Violence_clean_missing
 ```
 
+```{r}
+# Import library
+library(dplyr)
+library(ggplot2)
+library(broom)
+library(ggeffects)  #
+
+# Binary variable
+Violence_model_data <- Violence_clean_missing %>%
+  filter(PRIMARY_TYPE != "UNKNOWN", SEX != "UNKNOWN", RACE != "UNKNOWN") %>%
+  mutate(
+    IS_SEXUAL_ASSAULT = ifelse(PRIMARY_TYPE == "CRIMINAL SEXUAL ASSAULT", 1, 0),
+    SEX = factor(SEX),
+    RACE = factor(RACE)
+  )
+
+# Logistic regression model 
+model <- glm(IS_SEXUAL_ASSAULT ~ SEX * RACE, 
+             data = Violence_model_data, 
+             family = binomial)
+
+# model summary
+summary(model)  
+tidy(model, exponentiate = TRUE, conf.int = TRUE)  
+
+# probability predict
+library(ggeffects)
+pred <- ggpredict(model, terms = c("SEX", "RACE"))
+
+# visuaization
+plot(pred) +
+  labs(title = "Predicted Probability of Being a Sexual Assault Victim",
+       x = "Sex",
+       y = "Predicted Probability") +
+  theme_minimal()
+
+```
+

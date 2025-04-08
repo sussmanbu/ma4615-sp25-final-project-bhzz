@@ -1,0 +1,39 @@
+---
+title: "4thBlogPost"
+format: html
+---
+
+```{r}
+# Load packages
+install.packages("ggeffects")
+library(dplyr)
+library(ggplot2)
+library(broom)
+library(ggeffects) # for prediction plotting
+ 
+# Step 1: Create binary response variable
+Violence_clean <- Violence |>
+  filter(!is.na(SEX), !is.na(RACE), !is.na(PRIMARY_TYPE)) |>
+  mutate(
+    IS_SEXUAL_ASSAULT = ifelse(PRIMARY_TYPE == "CRIMINAL SEXUAL ASSAULT", 1, 0),
+    SEX = factor(SEX),
+    RACE = factor(RACE)
+  )
+ 
+# Step 2: Fit logistic regression
+model <- glm(IS_SEXUAL_ASSAULT ~ SEX * RACE, data = Violence_clean, family = "binomial")
+ 
+# Step 3: Summarize model
+summary(model)
+ 
+# Optional: Tidy output
+tidy(model, exponentiate = TRUE, conf.int = TRUE)
+ 
+# Step 4: Plot predicted probabilities
+pred <- ggpredict(model, terms = c("SEX", "RACE"))
+plot(pred) + 
+  labs(title = "Predicted probability of sexual assault victimization",
+       y = "Probability", x = "Sex") +
+  theme_minimal()
+```
+
