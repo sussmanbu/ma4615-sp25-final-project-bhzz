@@ -1,0 +1,104 @@
+---
+title: "Fourth blog post"
+subtitle: ""
+description:  |
+  This post is the Fourth blog post for group 12.
+author: "BHZZ"
+date: "2025-03-31"
+image: ""
+image-alt: ""
+categories: []
+date-modified: "2025-03-31"
+draft: FALSE
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## **Key Trends Identified Through EDA:**
+
+In earlier exploration, we observed two major patterns from the Chicago
+violent crime dataset:
+
+-   Gender Disparities: Males are significantly more likely to be
+    victims of most violent crimes (assault, battery, homicide,
+    robbery). However, females are disproportionately represented in
+    sexual assault and human trafficking cases.
+
+-   Racial Disparities: Black (BLK) individuals, especially males,
+    consistently account for the highest number of victims in battery
+    and homicide cases. However, when we break victim data down by both
+    race and sex, more nuanced patterns emerge.
+
+To explore these trends further, we selected two visualizations:
+
+**Figure 1: Violent Crime Victimization by Sex**
+
+This figure clearly shows that males dominate in victim counts across
+nearly all violent crime categories—except for criminal sexual assault,
+where female victims outnumber male victims by more than double. This
+prompted us to investigate whether sex is a strong statistical predictor
+of being a sexual assault victim.
+
+![](figure1.png)
+
+**Figure 2: Violent Crime Victimization by Race and Sex**
+
+By plotting both race and sex, we found strong intersectional patterns.
+For example, Black males are disproportionately affected by homicide and
+battery, while White Hispanic and White females appear more frequently
+in sexual assault cases. This raises the question: how do race and sex
+interact in shaping the risk of being a sexual assault victim?
+
+![](figure2.png)
+
+Logistic Regression Model: Predicting Sexual Assault Victimization
+
+To better understand this relationship, we fit a logistic regression
+model with the following specification:
+
+-   Response variable: IS_SEXUAL_ASSAULT (1 if the victim was recorded
+    as such, 0 otherwise)
+
+-   Predictors: SEX, RACE, and their interaction (SEX \* RACE)
+
+We used ggeffects::ggpredict() to visualize the predicted probabilities.
+
+Figure 3: Predicted Probability of Being a Sexual Assault Victim
+
+This model output confirms our earlier observations:
+
+-   Across all racial groups, females have significantly higher
+    predicted probabilities of being sexual assault victims than males.
+
+-   Males have near-zero probabilities, indicating that sex is by far
+    the strongest predictor.
+
+-   Among females, the probability varies by race:
+
+    -   Highest: White Hispanic (WWH) and White Non-Hispanic (WHI)\
+        Lower: Asian/Pacific Islander (API) and Indigenous (I)
+
+These insights support the idea that both gender and race interact in
+shaping crime victimization risk—especially for sensitive categories
+like sexual assault.
+
+![](figure3.png)
+
+Takeaways & Next Steps
+
+-   We validated major EDA trends with modeling: being female greatly
+    increases the odds of being a sexual assault victim, with race
+    playing a secondary but still notable role.
+
+-   These findings emphasize the importance of intersectional analysis
+    when working with demographic data.
+
+-   For next steps, we plan to:
+
+    -   Include year as a variable to assess trends over time
+
+    -   Explore other crime categories (e.g., battery, robbery)
+
+    -   Consider other predictors such as age, domestic violence flag,
+        or gun involvement

@@ -1,0 +1,20 @@
+---
+title: "Seventh blog post"
+subtitle: ""
+description:  |
+  This post is the seventh blog post for group 12.
+author: "BHZZ"
+date: "2025-04-22"
+image: ""
+image-alt: ""
+categories: []
+date-modified: "2025-04-22"
+draft: FALSE
+---
+
+```{r}
+install.packages("shiny")
+```
+
+
+
