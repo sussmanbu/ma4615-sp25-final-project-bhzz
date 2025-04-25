@@ -14,6 +14,8 @@ draft: FALSE
 
 # Run in console
 install.packages("tidycensus")
+
+Dashboard#1: Race Representation in Chicago: Crime Victims vs Population by year 2021, 2022, and 2023
 ```{r}
 library(tidycensus)
 
@@ -36,7 +38,7 @@ data2021 <- get_acs(
   survey = "acs1"
 )
 
-saveRDS(data2021, "chicago_census_2021.rds")
+saveRDS(data2021, "dataset/chicago_census_2021.rds")
 
 # 2022
 data2022 <- get_acs(
@@ -54,7 +56,7 @@ data2022 <- get_acs(
   survey = "acs1"
 )
 
-saveRDS(data2022, "chicago_census_2022.rds")
+saveRDS(data2022, "dataset/chicago_census_2022.rds")
 
 # 2023
 data2023 <- get_acs(
@@ -72,7 +74,7 @@ data2023 <- get_acs(
   survey = "acs1"
 )
 
-saveRDS(data2023, "chicago_census_2023.rds")
+saveRDS(data2023, "dataset/chicago_census_2023.rds")
 
 
 ```
@@ -85,6 +87,7 @@ library(tidyr)
 library(readr)
 
 ```
+
 ```{r shiny-UI}
 # ==== UI ====
 ui <- fluidPage(
@@ -140,78 +143,84 @@ server <- function(input, output) {
       mutate(Proportion = Count / sum(Count) * 100,
              Source = "Crime Victims") |>
       select(RACE, Proportion, Source)
+    
+    
+    # ==== 3. Combine and plot ====
+    combined <- bind_rows(census_df, victim_df)
+
+    ggplot(combined, aes(x = RACE, y = Proportion, fill = Source)) +
+      geom_col(position = "dodge") +
+      labs(title = paste("Race Representation in Chicago (", input$year, ")", sep = ""),
+           x = "Race", y = "Proportion (%)") +
+      theme_minimal()
+  })
+
+  # Add a note
+  output$note <- renderText({
+    paste0("Note: Population data for ", input$year,
+           " comes from the U.S. Census ACS 1-Year Estimates. ",
+           "Crime data reflects victim demographics recorded by CPD in the same year.")
+  })
+}
 
 ```
 
-
-
-
-
-
-
-```{r load-data}
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(readr)
-
-# loading data
-census_raw <- readRDS("chicago_census_2021.rds")
-Violence_clean_missing <- read_csv("dataset/Violence_clean_missing.csv")
-
-# selecting Chicago data
-chicago_row <- census_raw |>
-  filter(NAME == "Chicago city, Illinois") |>
-  select(variable, estimate) 
-
-chicago_wide <- chicago_row |>
-  tidyr::pivot_wider(names_from = variable, values_from = estimate)
-
-head(chicago_row)
+```{r shiny-run}
+# ==== Run App ====
+shinyApp(ui = ui, server = server)
 
 ```
 
+Dashboard#2: 
 
+```{r shiny-UI}
 
-```{r shiny-setup}
+# ========== UI ==========
+ui <- fluidPage(
+  titlePanel("Victim Demographics by Crime Type"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("crime_type", "Select Crime Type:",
+                  choices = unique(violence_data$PRIMARY_TYPE),
+                  selected = "BATTERY"),
+      checkboxGroupInput("sex", "Select Gender:",
+                         choices = unique(violence_data$SEX),
+                         selected = c("M", "F")),
+      checkboxGroupInput("race", "Select Race:",
+                         choices = unique(violence_data$RACE),
+                         selected = c("BLK", "WHI", "HIS", "API"))
+    ),
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
 
-# Calculate the proportion for 20
-census_df <- chicago_wide |>
-  mutate(
-    WHI = white / total * 100,
-    BLK = black / total * 100,
-    HIS = hispanic / total * 100,
-    API = asian / total * 100,
-    I   = native / total * 100
-  ) |>
-  select(WHI, BLK, HIS, API, I) |>
-  pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") |>
-  mutate(Source = "Census")
-
-# Criminal data
-victim_df <- Violence_clean_missing |>
-  filter(Year == 2020) |>
-  filter(!(RACE %in% c("UNKNOWN", "S"))) |>
-  mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) |>
-  group_by(RACE) |>
-  summarise(Count = n(), .groups = "drop") |>
-  mutate(Proportion = Count / sum(Count) * 100,
-         Source = "Crime Victims") |>
-  select(RACE, Proportion, Source)
-
-# Combining and Visualization
-bind_rows(census_df, victim_df) |>
-  ggplot(aes(x = RACE, y = Proportion, fill = Source)) +
-  geom_col(position = "dodge") +
-  labs(title = "Race Representation in Chicago (2020): Victims vs Census",
-       x = "Race", y = "Proportion (%)") +
-  theme_minimal()
 ```
 
 ```{r shiny-server}
 
-shinyApp(ui, server)
+# ========== SERVER ==========
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    filtered <- violence_data |>
+      filter(PRIMARY_TYPE == input$crime_type,
+             SEX %in% input$sex,
+             RACE %in% input$race)
 
+    ggplot(filtered, aes(x = SEX, fill = RACE)) +
+      geom_bar(position = "stack") +
+      labs(title = paste("Victim Gender-Race Distribution for", input$crime_type),
+           x = "Gender", y = "Number of Victims", fill = "Race") +
+      theme_minimal()
+  })
+}
 
 ```
 
+
+```{r shiny-run}
+# ==== Run App ====
+shinyApp(ui = ui, server = server)
+
+```
