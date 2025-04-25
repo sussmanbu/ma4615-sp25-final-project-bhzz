@@ -13,8 +13,125 @@ draft: FALSE
 ---
 
 ```{r}
-install.packages("shiny")
+install.packages(c("shiny", "tidycensus", "dplyr", "ggplot2", "tidyr"))
+
+```
+
+```{r}
+# Preparation
+library(shiny)
+library(dplyr)
+library(tidycensus)
+library(ggplot2)
+library(tidyr)
+
+
+# Load the data
+Violence_clean_missing <- read.csv("dataset/Violence_clean_missing.csv")
+
+# Accessing census data
+census_api_key("API key", install = TRUE)
+get_acs(geography = "state", variables = "B01001_001", year = 2020)
 ```
 
 
+```{r}
+
+get_chicago_race_proportion <- function(year) {
+  vars <- c(
+    total = "B03002_001",
+    white = "B03002_003",
+    black = "B03002_004",
+    native = "B03002_005",
+    asian = "B03002_006",
+    hispanic = "B03002_012"
+  )
+  
+  raw <- get_acs(
+    geography = "place",
+    variables = vars,
+    state = "IL",
+    year = year,
+    survey = "acs1",
+    geometry = FALSE
+  )
+  
+  chicago_row <- raw %>%
+    filter(NAME == "Chicago city, Illinois") %>%
+    select(variable, estimate) %>%
+    pivot_wider(names_from = variable, values_from = estimate)
+  
+  if (nrow(chicago_row) == 0) return(NULL)
+
+  chicago_row %>%
+    mutate(
+      WHI = B03002_003 / B03002_001 * 100,
+      BLK = B03002_004 / B03002_001 * 100,
+      HIS = B03002_012 / B03002_001 * 100,
+      API = B03002_006 / B03002_001 * 100,
+      I   = B03002_005 / B03002_001 * 100
+    ) %>%
+    select(WHI, BLK, HIS, API, I) %>%
+    pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") %>%
+    mutate(Source = "Census")
+}
+
+# Shiny UI
+ui <- fluidPage(
+  titlePanel("Chicago Crime Victims vs Census Population (Auto-Fetch)"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("year", "Select Year (ACS 1-Year):", choices = c(2016:2022), selected = 2020)
+    ),
+    mainPanel(
+      plotOutput("race_plot"),
+      textOutput("note")
+    )
+  )
+)
+
+# Server logic
+server <- function(input, output) {
+  
+  output$race_plot <- renderPlot({
+    # 获取人口比例数据
+    census_df <- get_chicago_race_proportion(input$year)
+    
+    if (is.null(census_df)) {
+      return(NULL)
+    }
+    
+    # 获取犯罪受害者比例
+    decade_start <- input$year
+    decade_end <- decade_start + 1
+
+    victim_df <- Violence_clean_missing %>%
+      filter(Year >= decade_start, Year < decade_end) %>%
+      filter(!(RACE %in% c("UNKNOWN", "S"))) %>%
+      mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) %>%
+      group_by(RACE) %>%
+      summarise(Count = n()) %>%
+      mutate(Proportion = Count / sum(Count) * 100,
+             Source = "Crime Victims") %>%
+      select(RACE, Proportion, Source)
+    
+    combined_df <- bind_rows(census_df, victim_df)
+
+    ggplot(combined_df, aes(x = RACE, y = Proportion, fill = Source)) +
+      geom_col(position = "dodge") +
+      labs(title = paste("Race Representation in", input$year),
+           x = "Race", y = "Proportion (%)") +
+      theme_minimal()
+  })
+
+  output$note <- renderText({
+    paste0("Note: Census data pulled live from ACS 1-Year estimates for ", input$year,
+           ". Crime data reflects victim records from the same year.")
+  })
+}
+
+shinyApp(ui, server)
+
+
+```
 
