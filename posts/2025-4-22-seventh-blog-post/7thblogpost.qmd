@@ -12,131 +12,205 @@ date-modified: "2025-04-22"
 draft: FALSE
 ---
 
+# Run in console
+install.packages("tidycensus")
 ```{r}
-install.packages(c("shiny", "tidycensus", "dplyr", "ggplot2", "tidyr"))
-
-```
-
-```{r}
-# Preparation
-library(shiny)
-library(dplyr)
 library(tidycensus)
-library(ggplot2)
-library(tidyr)
 
+# importing census data for 2021, 202, and 2022
+census_api_key("c4df8a0f6334859b29db81b64e1ac48b98038f19", overwrite = TRUE)
 
-# Load the data
-Violence_clean_missing <- read.csv("dataset/Violence_clean_missing.csv")
-
-# Accessing census data
-census_api_key("c4df8a0f6334859b29db81b64e1ac48b98038f19", install = TRUE)
-get_acs(geography = "state", variables = "B01001_001", year = 2020)
-```
-
-
-```{r}
-
-get_chicago_race_proportion <- function(year) {
-  vars <- c(
+# 2021
+data2021 <- get_acs(
+  geography = "place",
+  variables = c(
     total = "B03002_001",
     white = "B03002_003",
     black = "B03002_004",
     native = "B03002_005",
     asian = "B03002_006",
     hispanic = "B03002_012"
-  )
-  
-  raw <- get_acs(
-    geography = "place",
-    variables = vars,
-    state = "IL",
-    year = year,
-    survey = "acs1",
-    geometry = FALSE
-  )
-  
-  chicago_row <- raw %>%
-    filter(NAME == "Chicago city, Illinois") %>%
-    select(variable, estimate) %>%
-    pivot_wider(names_from = variable, values_from = estimate)
-  
-  if (nrow(chicago_row) == 0) return(NULL)
+  ),
+  state = "IL",
+  year = 2021,
+  survey = "acs1"
+)
 
-  chicago_row %>%
-    mutate(
-      WHI = B03002_003 / B03002_001 * 100,
-      BLK = B03002_004 / B03002_001 * 100,
-      HIS = B03002_012 / B03002_001 * 100,
-      API = B03002_006 / B03002_001 * 100,
-      I   = B03002_005 / B03002_001 * 100
-    ) %>%
-    select(WHI, BLK, HIS, API, I) %>%
-    pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") %>%
-    mutate(Source = "Census")
-}
+saveRDS(data2021, "chicago_census_2021.rds")
 
-# Shiny UI
+# 2022
+data2022 <- get_acs(
+  geography = "place",
+  variables = c(
+    total = "B03002_001",
+    white = "B03002_003",
+    black = "B03002_004",
+    native = "B03002_005",
+    asian = "B03002_006",
+    hispanic = "B03002_012"
+  ),
+  state = "IL",
+  year = 2022,
+  survey = "acs1"
+)
+
+saveRDS(data2022, "chicago_census_2022.rds")
+
+# 2023
+data2023 <- get_acs(
+  geography = "place",
+  variables = c(
+    total = "B03002_001",
+    white = "B03002_003",
+    black = "B03002_004",
+    native = "B03002_005",
+    asian = "B03002_006",
+    hispanic = "B03002_012"
+  ),
+  state = "IL",
+  year = 2023,
+  survey = "acs1"
+)
+
+saveRDS(data2023, "chicago_census_2023.rds")
+
+
+```
+
+```{r}
+library(shiny)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+
+```
+```{r shiny-UI}
+# ==== UI ====
 ui <- fluidPage(
-  titlePanel("Chicago Crime Victims vs Census Population (Auto-Fetch)"),
+  titlePanel("Race Representation in Chicago: Crime Victims vs Population"),
   sidebarLayout(
     sidebarPanel(
-      selectInput("year", "Select Year (ACS 1-Year):", choices = c(2016:2022), selected = 2020)
+      selectInput("year", "Select Year:", choices = c(2021, 2022, 2023), selected = 2021)
     ),
     mainPanel(
       plotOutput("race_plot"),
+      br(),
       textOutput("note")
     )
   )
 )
 
-# Server logic
-server <- function(input, output) {
-  
-  output$race_plot <- renderPlot({
-    # 获取人口比例数据
-    census_df <- get_chicago_race_proportion(input$year)
-    
-    if (is.null(census_df)) {
-      return(NULL)
-    }
-    
-    # 获取犯罪受害者比例
-    decade_start <- input$year
-    decade_end <- decade_start + 1
-
-    victim_df <- Violence_clean_missing %>%
-      filter(Year >= decade_start, Year < decade_end) %>%
-      filter(!(RACE %in% c("UNKNOWN", "S"))) %>%
-      mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) %>%
-      group_by(RACE) %>%
-      summarise(Count = n()) %>%
-      mutate(Proportion = Count / sum(Count) * 100,
-             Source = "Crime Victims") %>%
-      select(RACE, Proportion, Source)
-    
-    combined_df <- bind_rows(census_df, victim_df)
-
-    ggplot(combined_df, aes(x = RACE, y = Proportion, fill = Source)) +
-      geom_col(position = "dodge") +
-      labs(title = paste("Race Representation in", input$year),
-           x = "Race", y = "Proportion (%)") +
-      theme_minimal()
-  })
-
-  output$note <- renderText({
-    paste0("Note: Census data pulled live from ACS 1-Year estimates for ", input$year,
-           ". Crime data reflects victim records from the same year.")
-  })
-}
-
 
 ```
 
-```{r shiny}
+
+```{r shiny-Server}
+# ==== Server ====
+server <- function(input, output) {
+  # Load violence data once
+  violence_data <- read_csv("dataset/Violence_clean_missing.csv", show_col_types = FALSE)
+
+  output$race_plot <- renderPlot({
+    # ==== 1. Load census data ====
+    census_raw <- readRDS(paste0("dataset/chicago_census_", input$year, ".rds"))
+
+    census_df <- census_raw |>
+      filter(NAME == "Chicago city, Illinois") |>
+      select(variable, estimate) |>
+      pivot_wider(names_from = variable, values_from = estimate) |>
+      mutate(
+        WHI = white / total * 100,
+        BLK = black / total * 100,
+        HIS = hispanic / total * 100,
+        API = asian / total * 100,
+        I   = native / total * 100
+      ) |>
+      select(WHI, BLK, HIS, API, I) |>
+      pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") |>
+      mutate(Source = "Census")
+
+    # ==== 2. Create crime victim data ====
+    victim_df <- violence_data |>
+      filter(Year == input$year) |>
+      filter(!(RACE %in% c("UNKNOWN", "S"))) |>
+      mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) |>
+      group_by(RACE) |>
+      summarise(Count = n(), .groups = "drop") |>
+      mutate(Proportion = Count / sum(Count) * 100,
+             Source = "Crime Victims") |>
+      select(RACE, Proportion, Source)
+
+```
+
+
+
+
+
+
+
+```{r load-data}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(readr)
+
+# loading data
+census_raw <- readRDS("chicago_census_2021.rds")
+Violence_clean_missing <- read_csv("dataset/Violence_clean_missing.csv")
+
+# selecting Chicago data
+chicago_row <- census_raw |>
+  filter(NAME == "Chicago city, Illinois") |>
+  select(variable, estimate) 
+
+chicago_wide <- chicago_row |>
+  tidyr::pivot_wider(names_from = variable, values_from = estimate)
+
+head(chicago_row)
+
+```
+
+
+
+```{r shiny-setup}
+
+# Calculate the proportion for 20
+census_df <- chicago_wide |>
+  mutate(
+    WHI = white / total * 100,
+    BLK = black / total * 100,
+    HIS = hispanic / total * 100,
+    API = asian / total * 100,
+    I   = native / total * 100
+  ) |>
+  select(WHI, BLK, HIS, API, I) |>
+  pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") |>
+  mutate(Source = "Census")
+
+# Criminal data
+victim_df <- Violence_clean_missing |>
+  filter(Year == 2020) |>
+  filter(!(RACE %in% c("UNKNOWN", "S"))) |>
+  mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) |>
+  group_by(RACE) |>
+  summarise(Count = n(), .groups = "drop") |>
+  mutate(Proportion = Count / sum(Count) * 100,
+         Source = "Crime Victims") |>
+  select(RACE, Proportion, Source)
+
+# Combining and Visualization
+bind_rows(census_df, victim_df) |>
+  ggplot(aes(x = RACE, y = Proportion, fill = Source)) +
+  geom_col(position = "dodge") +
+  labs(title = "Race Representation in Chicago (2020): Victims vs Census",
+       x = "Race", y = "Proportion (%)") +
+  theme_minimal()
+```
+
+```{r shiny-server}
 
 shinyApp(ui, server)
-
 
 
 ```

@@ -5,7 +5,6 @@ format: html
 
 ```{r}
 # Load packages
-install.packages("ggeffects")
 library(dplyr)
 library(ggplot2)
 library(broom)
