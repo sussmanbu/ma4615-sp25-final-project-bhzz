@@ -30,7 +30,7 @@ library(tidyr)
 Violence_clean_missing <- read.csv("dataset/Violence_clean_missing.csv")
 
 # Accessing census data
-census_api_key("API key", install = TRUE)
+census_api_key("c4df8a0f6334859b29db81b64e1ac48b98038f19", install = TRUE)
 get_acs(geography = "state", variables = "B01001_001", year = 2020)
 ```
 
@@ -130,7 +130,13 @@ server <- function(input, output) {
   })
 }
 
+
+```
+
+```{r shiny}
+
 shinyApp(ui, server)
+
 
 
 ```
