@@ -106,6 +106,18 @@ ui <- fluidPage(
 
 
 ```
+=======
+**Progress**
+We've explored the dataset and started cleaning it in R while identifying variables like arrest date, borough, offense description, and demographic details that will be central to the interactive. Our next step is to build the Shiny app that includes both a time trend chart and dropdown filters for user exploration.
+
+**Interactive**
+We're creating the interactive dashboard called Arrest Trends Explorer, which will let users explore NYPD arrest data from different angles. 
+- The goal is to make the data accessible and engaging by allowing users to view big picture trends like total arrests over time. 
+- Users will also be able to "zoom in" on more specific patterns. 
+- Users will be able to filter the data by borough, offense type, and demographic categories such as age or race. 
+- This gives them the power to investigate questions that are personally meaningful or socially relevant, such as whether certain neighborhoods experience more arrests for specific types of crimes, or how trends shift over the course of a year.
+
+
 
 
 ```{r shiny-Server1}
