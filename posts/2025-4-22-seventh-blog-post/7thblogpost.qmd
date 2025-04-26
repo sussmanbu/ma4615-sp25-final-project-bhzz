@@ -88,7 +88,7 @@ library(readr)
 
 ```
 
-```{r shiny-UI}
+```{r shiny-UI1}
 # ==== UI ====
 ui <- fluidPage(
   titlePanel("Race Representation in Chicago: Crime Victims vs Population"),
@@ -108,7 +108,7 @@ ui <- fluidPage(
 ```
 
 
-```{r shiny-Server}
+```{r shiny-Server1}
 # ==== Server ====
 server <- function(input, output) {
   # Load violence data once
@@ -165,7 +165,7 @@ server <- function(input, output) {
 
 ```
 
-```{r shiny-run}
+```{r shiny-run1}
 # ==== Run App ====
 shinyApp(ui = ui, server = server)
 
@@ -173,10 +173,12 @@ shinyApp(ui = ui, server = server)
 
 Dashboard#2: 
 
-```{r shiny-UI}
+```{r shiny-UI2}
+violence_data <- read_csv("dataset/Violence_clean_missing.csv", show_col_types = FALSE)
+
 
 # ========== UI ==========
-ui <- fluidPage(
+ui2 <- fluidPage(
   titlePanel("Victim Demographics by Crime Type"),
   sidebarLayout(
     sidebarPanel(
@@ -198,10 +200,10 @@ ui <- fluidPage(
 
 ```
 
-```{r shiny-server}
+```{r shiny-server2}
 
 # ========== SERVER ==========
-server <- function(input, output) {
+server2 <- function(input, output) {
   output$distPlot <- renderPlot({
     filtered <- violence_data |>
       filter(PRIMARY_TYPE == input$crime_type,
@@ -210,8 +212,10 @@ server <- function(input, output) {
 
     ggplot(filtered, aes(x = SEX, fill = RACE)) +
       geom_bar(position = "stack") +
-      labs(title = paste("Victim Gender-Race Distribution for", input$crime_type),
-           x = "Gender", y = "Number of Victims", fill = "Race") +
+      labs(
+        title = paste("Victim Gender-Race Distribution for", input$crime_type),
+        x = "Gender", y = "Number of Victims", fill = "Race"
+      ) +
       theme_minimal()
   })
 }
@@ -219,8 +223,8 @@ server <- function(input, output) {
 ```
 
 
-```{r shiny-run}
+```{r shiny-run2}
 # ==== Run App ====
-shinyApp(ui = ui, server = server)
+shinyApp(ui2, server2)
 
 ```

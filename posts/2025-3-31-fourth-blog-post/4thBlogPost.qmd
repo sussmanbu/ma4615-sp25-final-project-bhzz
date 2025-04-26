@@ -4,6 +4,9 @@ format: html
 ---
 
 ```{r}
+library(readr)
+Violence <- read_csv("scripts/Violence_clean_missing.csv")
+
 # Load packages
 library(dplyr)
 library(ggplot2)
