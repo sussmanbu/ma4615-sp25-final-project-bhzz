@@ -81,16 +81,18 @@ install.packages("tidycensus")
 
 Dashboard#1: Race Representation in Chicago: Crime Victims vs Population by year 2021, 2022, and 2023
 
-```{shinylive-r}
+```{shinylive-r setup}
 library(shiny)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(readr)
 
+violence_data <- read_csv("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/Violence_clean_missing.csv", show_col_types = FALSE)
+
 ```
 
-```{shinylive-r-UI1}
+```{shinylive-r ui}
 # ==== UI ====
 ui <- fluidPage(
   titlePanel("Race Representation in Chicago: Crime Victims vs Population"),
@@ -110,11 +112,9 @@ ui <- fluidPage(
 ```
 
 
-```{shinylive-r-Server1}
+```{shinylive-r server}
 # ==== Server ====
 server <- function(input, output) {
-  # Load violence data once
-  violence_data <- read_csv("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/Violence_clean_missing.csv", show_col_types = FALSE)
 
   output$race_plot <- renderPlot({
     # ==== 1. Load census data ====
@@ -167,7 +167,7 @@ server <- function(input, output) {
 
 ```
 
-```{shinylive-r-run1}
+```{shinylive-r run}
 # ==== Run App ====
 shinyApp(ui = ui, server = server)
 
@@ -175,9 +175,7 @@ shinyApp(ui = ui, server = server)
 
 Dashboard#2: 
 
-```{shinylive-r-UI2}
-violence_data <- read_csv("https://raw.githubusercontent.com/sussmanbu/ma4615-sp25-final-project-bhzz/refs/heads/main/scripts/Violence_clean_missing.csv", show_col_types = FALSE)
-
+```{shinylive-r ui2}
 
 # ========== UI ==========
 ui2 <- fluidPage(
@@ -202,7 +200,7 @@ ui2 <- fluidPage(
 
 ```
 
-```{shinylive-r-server2}
+```{shinylive-r server2}
 
 # ========== SERVER ==========
 server2 <- function(input, output) {
@@ -225,7 +223,7 @@ server2 <- function(input, output) {
 ```
 
 
-```{shinylive-r-run2}
+```{shinylive-r run2}
 # ==== Run App ====
 shinyApp(ui2, server2)
 
