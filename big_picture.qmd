@@ -1,19 +1,24 @@
 ---
 title: "Big Picture"
 editor: visual
-format:
-  html:
-    include-in-header: shinylive/resources/header.html
-css:
-  - styles.css
-toc: true
+format: html
 extensions:
   - shinylive
 shinylive:
   components:
     - shiny
     - leaflet
+css:
+  - styles.css
+toc: true
 ---
+
+::: {=html}
+<script type="module">
+  import { main } from "./shinylive/scripts/main.js";
+  main();
+</script>
+:::
 
 
 
