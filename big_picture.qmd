@@ -1,24 +1,20 @@
 ---
 title: "Big Picture"
-format: html
 editor: visual
+format:
+  html:
+    include-in-header: shinylive/resources/header.html
+css:
+  - styles.css
+toc: true
 extensions:
   - shinylive
 shinylive:
   components:
     - shiny
     - leaflet
-css:
-  - styles.css
-toc: true
-document-css: false
-link-citations: true
-date-format: long
-lang: en
-theme: cosmo
-description: A 538/Upshot style article about the data.
-draft: false
 ---
+
 
 
 ![](images/The_Big_Picture_2.jpeg)
