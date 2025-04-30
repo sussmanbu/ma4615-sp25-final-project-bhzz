@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A 538/Upshot style article about the data.">
 
 <title>Big Picture – MA [46]15 Final Project Group BHZZ</title>
 <style>
@@ -20,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -173,11 +138,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 class="title">Big Picture</h1>
 </div>
 
-<div>
-  <div class="description">
-    A 538/Upshot style article about the data.
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
@@ -192,6 +152,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="{=html}">
+<script type="module">
+  import { main } from "./shinylive/scripts/main.js";
+  main();
+</script>
+</div>
 <p><img src="images/The_Big_Picture_2.jpeg" class="img-fluid"></p>
 <p>This comes from the file <code>big_picture.qmd</code>.</p>
 <p>Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Try to write in the style of a news or popular article. Importantly, this page should be geared towards the general public. You shouldn’t assume the reader understands how to interpret a linear regression or a complicated plot. Focus on interpretation and visualizations.</p>
@@ -199,53 +165,127 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="interactive" class="level3">
 <h3 class="anchored" data-anchor-id="interactive">Interactive</h3>
 <p>Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.</p>
-<iframe src="interactive/index.html" width="100%" height="800px" style="border:none;">
-</iframe>
-<div class="cell" data-standalone="true" data-viewerheight="640">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="st">"readr.edition"</span> <span class="ot">=</span> <span class="dv">1</span>) <span class="co"># keep this to ensure you can download the data</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define UI for app that draws a histogram ----</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># App title ----</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"Hello Shiny!"</span>),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sidebar layout with input and output definitions ----</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">verticalLayout</span>(</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Input: Slider for the number of bins ----</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sliderInput</span>(<span class="at">inputId =</span> <span class="st">"bins"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">label =</span> <span class="st">"Number of bins:"</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">min =</span> <span class="dv">1</span>,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                  <span class="at">max =</span> <span class="dv">50</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                  <span class="at">value =</span> <span class="dv">30</span>),</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Output: Histogram ----</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">plotOutput</span>(<span class="at">outputId =</span> <span class="st">"distPlot"</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Define server logic required to draw a histogram ----</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The URL below has to point to a dataset on your github pages website</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I recommend creating a small-ish rds file that has only the data relevant to </span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the interactive.</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"https://sussmanbu.github.io/ma4615-final-project-quarto/dataset_for_shiny/combined_regional_data.rds"</span>)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> refusal_rate)) <span class="sc">+</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_histogram</span>(<span class="at">bins =</span> input<span class="sc">$</span>bins <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Shiny app ----</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<pre class="{shinylive-r}"><code>library(shiny)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+
+violence_data &lt;- read_csv("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/Violence_clean_missing.csv", show_col_types = FALSE)
+
+ui &lt;- fluidPage(
+  titlePanel("Race Representation in Chicago: Crime Victims vs Population"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("year", "Select Year:", choices = c(2021, 2022, 2023), selected = 2021)
+    ),
+    mainPanel(
+      plotOutput("race_plot"),
+      br(),
+      textOutput("note")
+    )
+  )
+)
+
+# ==== Server ====
+server &lt;- function(input, output) {
+  
+  output$race_plot &lt;- renderPlot({
+    # ==== 1. Load census data ====
+    census_raw &lt;- readRDS(paste0("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/chicago_census_", input$year, ".rds"))
+    
+    census_df &lt;- census_raw |&gt;
+      filter(NAME == "Chicago city, Illinois") |&gt;
+      select(variable, estimate) |&gt;
+      pivot_wider(names_from = variable, values_from = estimate) |&gt;
+      mutate(
+        WHI = white / total * 100,
+        BLK = black / total * 100,
+        HIS = hispanic / total * 100,
+        API = asian / total * 100,
+        I   = native / total * 100
+      ) |&gt;
+      select(WHI, BLK, HIS, API, I) |&gt;
+      pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") |&gt;
+      mutate(Source = "Census")
+    
+    # ==== 2. Create crime victim data ====
+    victim_df &lt;- violence_data |&gt;
+      filter(Year == input$year) |&gt;
+      filter(!(RACE %in% c("UNKNOWN", "S"))) |&gt;
+      mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) |&gt;
+      group_by(RACE) |&gt;
+      summarise(Count = n(), .groups = "drop") |&gt;
+      mutate(Proportion = Count / sum(Count) * 100,
+             Source = "Crime Victims") |&gt;
+      select(RACE, Proportion, Source)
+    
+    
+    # ==== 3. Combine and plot ====
+    combined &lt;- bind_rows(census_df, victim_df)
+    
+    ggplot(combined, aes(x = RACE, y = Proportion, fill = Source)) +
+      geom_col(position = "dodge") +
+      labs(title = paste("Race Representation in Chicago (", input$year, ")", sep = ""),
+           x = "Race", y = "Proportion (%)") +
+      theme_minimal()
+  })
+  
+  # Add a note
+  output$note &lt;- renderText({
+    paste0("Note: Population data for ", input$year,
+           " comes from the U.S. Census ACS 1-Year Estimates. ",
+           "Crime data reflects victim demographics recorded by CPD in the same year.")
+  })
+}
+
+
+# ==== Run App ====
+shinyApp(ui = ui, server = server)
+
+
+# ========== UI ==========
+ui2 &lt;- fluidPage(
+  titlePanel("Victim Demographics by Crime Type"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("crime_type", "Select Crime Type:",
+                  choices = unique(violence_data$PRIMARY_TYPE),
+                  selected = "BATTERY"),
+      checkboxGroupInput("sex", "Select Gender:",
+                         choices = unique(violence_data$SEX),
+                         selected = c("M", "F")),
+      checkboxGroupInput("race", "Select Race:",
+                         choices = unique(violence_data$RACE),
+                         selected = c("BLK", "WHI", "HIS", "API"))
+    ),
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+
+
+# ========== SERVER ==========
+server2 &lt;- function(input, output) {
+  output$distPlot &lt;- renderPlot({
+    filtered &lt;- violence_data |&gt;
+      filter(PRIMARY_TYPE == input$crime_type,
+             SEX %in% input$sex,
+             RACE %in% input$race)
+    
+    ggplot(filtered, aes(x = SEX, fill = RACE)) +
+      geom_bar(position = "stack") +
+      labs(
+        title = paste("Victim Gender-Race Distribution for", input$crime_type),
+        x = "Gender", y = "Number of Victims", fill = "Race"
+      ) +
+      theme_minimal()
+  })
+}
+
+# ==== Run App ====
+shinyApp(ui2, server2)</code></pre>
 <p>To get the shinylive-r working.</p>
 <ol type="1">
 <li>Make sure your shiny app works as a regular r chunk.</li>
