@@ -1,0 +1,12 @@
+name: dataset_for_shiny
+title: dataset_for_shiny
+username: yanyingh
+account: yanyingh
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14656764
+bundleId: 10208496
+url: https://yanyingh.shinyapps.io/dataset_for_shiny/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
