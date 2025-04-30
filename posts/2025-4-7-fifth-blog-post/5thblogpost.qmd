@@ -2,11 +2,9 @@
 title: "Fifth blog post"
 subtitle: ""
 description:  |
-  This post is the fifth blog post for group 12.
+  This blog post integrates Chicago crime data with 2023 census demographics to better understand racial and gender disparities in victimization. Initial findings highlight disproportionate impacts on Black individuals and women, with future steps focused on aligning race categories, merging datasets, and building visual analyses.
 author: "BHZZ"
 date: "2025-04-07"
-image: ""
-image-alt: ""
 categories: []
 date-modified: "2025-04-07"
 draft: FALSE

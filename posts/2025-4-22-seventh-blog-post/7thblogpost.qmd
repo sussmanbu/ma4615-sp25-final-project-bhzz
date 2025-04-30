@@ -2,10 +2,10 @@
 title: "Seventh blog post"
 subtitle: ""
 description:  |
-  This post is the seventh blog post for group 12.
+  This blog post presents two interactive Shiny dashboards analyzing racial and gender disparities in Chicago crime victim data. Users can compare victim demographics with census data and explore patterns by crime type, sex, and race.
 author: "BHZZ"
 date: "2025-04-22"
-image: ""
+image: image1-blog7.png
 image-alt: ""
 categories: []
 date-modified: "2025-04-22"
@@ -182,6 +182,7 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 
 ```
+![](image1-blog7.png)
 
 Dashboard#2: 
 
@@ -240,3 +241,4 @@ server2 <- function(input, output) {
 shinyApp(ui2, server2)
 
 ```
+![](image2-blog7.png)

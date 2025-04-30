@@ -2,11 +2,9 @@
 title: "Sixth blog post"
 subtitle: ""
 description:  |
-  This post is the sixth blog post for group 12.
+  This blog post outlines the next priorities: completing an interactive Shiny dashboard and refining the Big Picture article to clearly communicate racial and gender disparities in Chicago crime data. Key next steps include polishing visual explanations, improving narrative flow, and finalizing the headline.
 author: "BHZZ"
 date: "2025-04-14"
-image: ""
-image-alt: ""
 categories: []
 date-modified: "2025-04-14"
 draft: FALSE

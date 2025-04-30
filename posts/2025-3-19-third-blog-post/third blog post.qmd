@@ -2,11 +2,9 @@
 title: "Third blog post"
 subtitle: ""
 description:  |
-  This post is the third blog post for group 12.
+  This blog post describes how missing demographic values were handled during data cleaning to ensure reliable analysis of violence trends. It also emphasizes the ethical use of data through equity principles, highlighting the need to protect privacy, avoid bias, and use findings responsibly to support fair and community-based violence prevention efforts.
 author: "BHZZ"
 date: "2025-03-21"
-image: ""
-image-alt: ""
 categories: []
 date-modified: "2025-03-21"
 draft: FALSE

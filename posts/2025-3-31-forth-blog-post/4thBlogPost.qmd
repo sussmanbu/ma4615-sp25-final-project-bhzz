@@ -2,10 +2,10 @@
 title: "Fourth blog post"
 subtitle: ""
 description:  |
-  This post is the Fourth blog post for group 12.
+  This blog post uses visualizations and logistic regression to explore how gender and race intersect in shaping the risk of sexual assault victimization. Findings show that being female is the strongest predictor, with racial differences further refining the risk profile.
 author: "BHZZ"
 date: "2025-03-31"
-image: ""
+image: figure1.png
 image-alt: ""
 categories: []
 date-modified: "2025-03-31"

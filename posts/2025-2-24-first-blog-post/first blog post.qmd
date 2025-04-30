@@ -1,0 +1,61 @@
+---
+title: "First blog post"
+subtitle: ""
+description:  |
+  This post is the first blog post for group 12. Here we introduces three public datasets to explore racial disparities in school attendance, adult depression, and violent crime victimization.
+author: "BHZZ"
+date: "2025-02-24"
+categories: []
+date-modified: "2025-02-26"
+draft: FALSE
+---
+
+## **Datasets Selection:**
+
+1.  **School Attendance by Student Group and District, 2021-2022**
+
+    <https://catalog.data.gov/dataset/school-attendance-by-student-group-and-district-2021-2022>
+
+    -   Data size: 2,019 rows and 12 columns
+
+    -   Purpose: The dataset was collected to analyze student attendance rates across different public school districts in Connecticut for the 2021-2022 school year.
+
+    -   Collection Method: The Connecticut State Department of Education (CSDE) likely gathered this data from public schools' attendance records. It includes breakdowns by student demographics, districts, and statewide averages.
+
+    -   Use Case: The data helps identify attendance disparities among different student groups, supporting policy-making, funding allocations, and targeted interventions for at-risk students. For this project, we will work on analyzing the racial disparities
+
+    -   Question: Attendance differences by race/ethnicity.
+
+    -   Possible challenge: some missing data.
+
+2.  **Adult Depression (LGHC Indicator) - Catalog (data.gov), 2012-2018**
+
+    <https://catalog.data.gov/dataset/adult-depression-lghc-indicator-627e3>
+
+    -   Data size : 162 rows, 8 columns
+
+    -   Purpose: The data was collected as part of the California Behavioral Risk Factor Surveillance Survey to answer the question “Has a doctor, nurse, or other health professional EVER told you that you have a depressive disorder (including depression, major depression, dysthymia, or minor depression)?”
+
+    -   Collection Method: Telephone interviews
+
+    -   Are we able to clean the data: Yes
+
+    -   Main questions hope to address: Has the proportion of adults diagnosed with depression changed between 2012 and 2018 based on race or other factors
+
+    -   Challenges: Data and weighting come from the California Department of Finance, there may be differences from national reports. Also self-reporting could lead to underreporting or overreporting.
+
+3.  **Violence Reduction - Victim Demographics - Aggregated**
+
+    [Violence Reduction - Victim Demographics - Aggregated - Catalog](https://catalog.data.gov/dataset/violence-reduction-victim-demographics-aggregated)
+
+    -   Data size: 55676 row 11 col
+
+    -   Purpose: This dataset contains aggregate data on violent index victimizations at the quarter level of each year (i.e., January – March, April – June, July – September, October – December), from 2001 to the present (1991 to present for Homicides), with a focus on those related to gun violence.
+
+    -   Collection methods: The data is extracted from the Chicago Police Department's (CPD) case system and synchronized with the data on the Mayor's Office Violence Reduction Dashboard.
+
+    -   Are we able to clean the data: Yes
+
+    -   Main question to address: Do different ethnic groups have a particular preference for certain types of crimes, and is this preference related to specific geographic areas?
+
+    -   Challenge: To protect the privacy of victims, some data has been obfuscated, reducing the efficiency and accuracy of the dataset. There is a significant amount of "Unknown" values, which may require data supplementation or cleaning.
