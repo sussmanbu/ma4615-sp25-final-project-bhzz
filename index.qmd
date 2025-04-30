@@ -1,5 +1,5 @@
 ---
-title: "MA [46]15 Final Project"
+title: "Exploring Race and Gender Disparities in Chicago's Violent Crime Data"
 listing:
   contents: "posts/*/*.qmd"
   sort: "date desc"
