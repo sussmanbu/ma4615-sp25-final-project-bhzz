@@ -13,13 +13,6 @@ css:
 toc: true
 ---
 
-::: {=html}
-<script type="module">
-  import { main } from "./shinylive/scripts/main.js";
-  main();
-</script>
-:::
-
 
 
 ![](images/The_Big_Picture_2.jpeg)
@@ -33,153 +26,40 @@ Think of this page as your 538/Upshot style article. This means that you should 
 ---
 
 
-### Interactive
+# Who Gets Hurt? What Chicago Crime Data Reveals About Racial Inequality
 
-Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
-
-
-
-
-```{shinylive-r}
-library(shiny)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(readr)
-
-violence_data <- read_csv("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/Violence_clean_missing.csv", show_col_types = FALSE)
-
-ui <- fluidPage(
-  titlePanel("Race Representation in Chicago: Crime Victims vs Population"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("year", "Select Year:", choices = c(2021, 2022, 2023), selected = 2021)
-    ),
-    mainPanel(
-      plotOutput("race_plot"),
-      br(),
-      textOutput("note")
-    )
-  )
-)
-
-# ==== Server ====
-server <- function(input, output) {
-  
-  output$race_plot <- renderPlot({
-    # ==== 1. Load census data ====
-    census_raw <- readRDS(paste0("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/chicago_census_", input$year, ".rds"))
-    
-    census_df <- census_raw |>
-      filter(NAME == "Chicago city, Illinois") |>
-      select(variable, estimate) |>
-      pivot_wider(names_from = variable, values_from = estimate) |>
-      mutate(
-        WHI = white / total * 100,
-        BLK = black / total * 100,
-        HIS = hispanic / total * 100,
-        API = asian / total * 100,
-        I   = native / total * 100
-      ) |>
-      select(WHI, BLK, HIS, API, I) |>
-      pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") |>
-      mutate(Source = "Census")
-    
-    # ==== 2. Create crime victim data ====
-    victim_df <- violence_data |>
-      filter(Year == input$year) |>
-      filter(!(RACE %in% c("UNKNOWN", "S"))) |>
-      mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) |>
-      group_by(RACE) |>
-      summarise(Count = n(), .groups = "drop") |>
-      mutate(Proportion = Count / sum(Count) * 100,
-             Source = "Crime Victims") |>
-      select(RACE, Proportion, Source)
-    
-    
-    # ==== 3. Combine and plot ====
-    combined <- bind_rows(census_df, victim_df)
-    
-    ggplot(combined, aes(x = RACE, y = Proportion, fill = Source)) +
-      geom_col(position = "dodge") +
-      labs(title = paste("Race Representation in Chicago (", input$year, ")", sep = ""),
-           x = "Race", y = "Proportion (%)") +
-      theme_minimal()
-  })
-  
-  # Add a note
-  output$note <- renderText({
-    paste0("Note: Population data for ", input$year,
-           " comes from the U.S. Census ACS 1-Year Estimates. ",
-           "Crime data reflects victim demographics recorded by CPD in the same year.")
-  })
-}
+## Thesis / Goal
+In Chicago, crime doesn't affect all communities equally. Our analysis shows that Black residents are significantly overrepresented among crime victims compared to their share of the population, while White residents are underrepresented. These disparities are not random—they reflect deep-rooted social inequities that shape who gets harmed, where, and how often.
 
 
-# ==== Run App ====
-shinyApp(ui = ui, server = server)
+
+## What You’re Looking At
+### Figure 1: Racial Representation in Chicago – Crime Victims vs Population
+This bar chart compares the racial makeup of crime victims to the general population in 2021, 2022, 2023.
+Red bars show the racial distribution of the total population (Census data).
+Blue bars show the racial breakdown of crime victims (Chicago Police Department data).
+
+Key Insight: Black Chicagoans make up a disproportionately large share of victims, far exceeding their share of the population. Conversely, White residents are underrepresented among victims.
+![Race Representation in Chicago: Crime Victims vs Population](images/Interactice1.png)
+Interact with it [here](https://yanyingh.shinyapps.io/dataset_for_shiny/)
 
 
-# ========== UI ==========
-ui2 <- fluidPage(
-  titlePanel("Victim Demographics by Crime Type"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("crime_type", "Select Crime Type:",
-                  choices = unique(violence_data$PRIMARY_TYPE),
-                  selected = "BATTERY"),
-      checkboxGroupInput("sex", "Select Gender:",
-                         choices = unique(violence_data$SEX),
-                         selected = c("M", "F")),
-      checkboxGroupInput("race", "Select Race:",
-                         choices = unique(violence_data$RACE),
-                         selected = c("BLK", "WHI", "HIS", "API"))
-    ),
-    mainPanel(
-      plotOutput("distPlot")
-    )
-  )
-)
+### Figure 2: Victim Demographics for Robbery by Gender and Race
+This interactive stacked bar chart lets you explore who is most affected by different types of crime.
+Use the filters to switch between crime types or focus on specific groups.
+Each bar shows the racial composition of male and female victims.
 
-
-# ========== SERVER ==========
-server2 <- function(input, output) {
-  output$distPlot <- renderPlot({
-    filtered <- violence_data |>
-      filter(PRIMARY_TYPE == input$crime_type,
-             SEX %in% input$sex,
-             RACE %in% input$race)
-    
-    ggplot(filtered, aes(x = SEX, fill = RACE)) +
-      geom_bar(position = "stack") +
-      labs(
-        title = paste("Victim Gender-Race Distribution for", input$crime_type),
-        x = "Gender", y = "Number of Victims", fill = "Race"
-      ) +
-      theme_minimal()
-  })
-}
-
-# ==== Run App ====
-shinyApp(ui2, server2)
-```
+Key Insight: For robbery, Black victims again dominate, regardless of gender. The racial imbalance outweighs gender differences, suggesting that systemic factors, like neighborhood exposure or policing patterns, which may be driving risk.
+![Victim Demographics by Crime Type](images/Interactive2.png)
+Interact with it  [here](https://yanyingh.shinyapps.io/scripts/ )
 
 
 
 
-To get the shinylive-r working.
- 
-1. Make sure your shiny app works as a regular r chunk.
-2. Make sure that the chunk is completely self-contained. Meaning all packages and data are loaded inside that chunk. It can't rely on any other chunks.
-3. For the data that you are using for shiny, copy the rds file or any other files into the scripts folder, and then publish your website.
-4. Where you load in your data, change it to use a URL to the data set which will now be on your website. Something like read_rds("https://sussmanbu.github.io/ma-4615-fa24-final-project-group-a/scripts/dataset_for_shiny.rds")
-5. Check that the chunk still works as a regular r chunk.
-6. Change it to a shinylive-r chunk.
-7. Commit and publish your work.
+## Why It Matters
+These visuals aren’t just numbers—they reflect how inequality plays out in everyday safety. If certain communities are consistently more exposed to harm, public policy, policing resources, and community support need to account for that. Understanding the mismatch between population and victimization helps spark more targeted and equitable solutions.
 
-I recommend keeping the data used for the shiny interactive relatively small, though this isn't completely necessary.
 
----
 
 
 
