@@ -1,5 +1,6 @@
 ---
 title: "Exploring Race and Gender Disparities in Chicago's Violent Crime Data"
+format: html
 listing:
   contents: "posts/*/*.qmd"
   sort: "date desc"
