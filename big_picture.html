@@ -120,12 +120,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#interactive" id="toc-interactive" class="nav-link active" data-scroll-target="#interactive">Interactive</a></li>
+  <li><a href="#who-gets-hurt-what-chicago-crime-data-reveals-about-racial-inequality" id="toc-who-gets-hurt-what-chicago-crime-data-reveals-about-racial-inequality" class="nav-link active" data-scroll-target="#who-gets-hurt-what-chicago-crime-data-reveals-about-racial-inequality">Who Gets Hurt? What Chicago Crime Data Reveals About Racial Inequality</a>
+  <ul class="collapse">
+  <li><a href="#thesis-goal" id="toc-thesis-goal" class="nav-link" data-scroll-target="#thesis-goal">Thesis / Goal</a></li>
+  <li><a href="#what-youre-looking-at" id="toc-what-youre-looking-at" class="nav-link" data-scroll-target="#what-youre-looking-at">What You’re Looking At</a>
+  <ul class="collapse">
+  <li><a href="#figure-1-racial-representation-in-chicago-crime-victims-vs-population" id="toc-figure-1-racial-representation-in-chicago-crime-victims-vs-population" class="nav-link" data-scroll-target="#figure-1-racial-representation-in-chicago-crime-victims-vs-population">Figure 1: Racial Representation in Chicago – Crime Victims vs Population</a></li>
+  <li><a href="#figure-2-victim-demographics-for-robbery-by-gender-and-race" id="toc-figure-2-victim-demographics-for-robbery-by-gender-and-race" class="nav-link" data-scroll-target="#figure-2-victim-demographics-for-robbery-by-gender-and-race">Figure 2: Victim Demographics for Robbery by Gender and Race</a></li>
+  </ul></li>
+  <li><a href="#why-it-matters" id="toc-why-it-matters" class="nav-link" data-scroll-target="#why-it-matters">Why It Matters</a></li>
   <li><a href="#rubric-on-this-page" id="toc-rubric-on-this-page" class="nav-link" data-scroll-target="#rubric-on-this-page">Rubric: On this page</a></li>
   <li><a href="#rubric-other-components" id="toc-rubric-other-components" class="nav-link" data-scroll-target="#rubric-other-components">Rubric: Other components</a>
   <ul class="collapse">
   <li><a href="#video-recording" id="toc-video-recording" class="nav-link" data-scroll-target="#video-recording">Video Recording</a></li>
   <li><a href="#rest-of-the-site" id="toc-rest-of-the-site" class="nav-link" data-scroll-target="#rest-of-the-site">Rest of the Site</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -152,152 +161,32 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="{=html}">
-<script type="module">
-  import { main } from "./shinylive/scripts/main.js";
-  main();
-</script>
-</div>
 <p><img src="images/The_Big_Picture_2.jpeg" class="img-fluid"></p>
 <p>This comes from the file <code>big_picture.qmd</code>.</p>
 <p>Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Try to write in the style of a news or popular article. Importantly, this page should be geared towards the general public. You shouldn’t assume the reader understands how to interpret a linear regression or a complicated plot. Focus on interpretation and visualizations.</p>
 <hr>
-<section id="interactive" class="level3">
-<h3 class="anchored" data-anchor-id="interactive">Interactive</h3>
-<p>Your Big Data page should also include a small interactive dashboard. The dashboard should be created either using Shinylive, as below. This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.</p>
-<pre class="{shinylive-r}"><code>library(shiny)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(readr)
-
-violence_data &lt;- read_csv("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/Violence_clean_missing.csv", show_col_types = FALSE)
-
-ui &lt;- fluidPage(
-  titlePanel("Race Representation in Chicago: Crime Victims vs Population"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("year", "Select Year:", choices = c(2021, 2022, 2023), selected = 2021)
-    ),
-    mainPanel(
-      plotOutput("race_plot"),
-      br(),
-      textOutput("note")
-    )
-  )
-)
-
-# ==== Server ====
-server &lt;- function(input, output) {
-  
-  output$race_plot &lt;- renderPlot({
-    # ==== 1. Load census data ====
-    census_raw &lt;- readRDS(paste0("https://sussmanbu.github.io/ma4615-sp25-final-project-bhzz/scripts/chicago_census_", input$year, ".rds"))
-    
-    census_df &lt;- census_raw |&gt;
-      filter(NAME == "Chicago city, Illinois") |&gt;
-      select(variable, estimate) |&gt;
-      pivot_wider(names_from = variable, values_from = estimate) |&gt;
-      mutate(
-        WHI = white / total * 100,
-        BLK = black / total * 100,
-        HIS = hispanic / total * 100,
-        API = asian / total * 100,
-        I   = native / total * 100
-      ) |&gt;
-      select(WHI, BLK, HIS, API, I) |&gt;
-      pivot_longer(cols = everything(), names_to = "RACE", values_to = "Proportion") |&gt;
-      mutate(Source = "Census")
-    
-    # ==== 2. Create crime victim data ====
-    victim_df &lt;- violence_data |&gt;
-      filter(Year == input$year) |&gt;
-      filter(!(RACE %in% c("UNKNOWN", "S"))) |&gt;
-      mutate(RACE = ifelse(RACE %in% c("WBH", "WWH"), "HIS", RACE)) |&gt;
-      group_by(RACE) |&gt;
-      summarise(Count = n(), .groups = "drop") |&gt;
-      mutate(Proportion = Count / sum(Count) * 100,
-             Source = "Crime Victims") |&gt;
-      select(RACE, Proportion, Source)
-    
-    
-    # ==== 3. Combine and plot ====
-    combined &lt;- bind_rows(census_df, victim_df)
-    
-    ggplot(combined, aes(x = RACE, y = Proportion, fill = Source)) +
-      geom_col(position = "dodge") +
-      labs(title = paste("Race Representation in Chicago (", input$year, ")", sep = ""),
-           x = "Race", y = "Proportion (%)") +
-      theme_minimal()
-  })
-  
-  # Add a note
-  output$note &lt;- renderText({
-    paste0("Note: Population data for ", input$year,
-           " comes from the U.S. Census ACS 1-Year Estimates. ",
-           "Crime data reflects victim demographics recorded by CPD in the same year.")
-  })
-}
-
-
-# ==== Run App ====
-shinyApp(ui = ui, server = server)
-
-
-# ========== UI ==========
-ui2 &lt;- fluidPage(
-  titlePanel("Victim Demographics by Crime Type"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("crime_type", "Select Crime Type:",
-                  choices = unique(violence_data$PRIMARY_TYPE),
-                  selected = "BATTERY"),
-      checkboxGroupInput("sex", "Select Gender:",
-                         choices = unique(violence_data$SEX),
-                         selected = c("M", "F")),
-      checkboxGroupInput("race", "Select Race:",
-                         choices = unique(violence_data$RACE),
-                         selected = c("BLK", "WHI", "HIS", "API"))
-    ),
-    mainPanel(
-      plotOutput("distPlot")
-    )
-  )
-)
-
-
-# ========== SERVER ==========
-server2 &lt;- function(input, output) {
-  output$distPlot &lt;- renderPlot({
-    filtered &lt;- violence_data |&gt;
-      filter(PRIMARY_TYPE == input$crime_type,
-             SEX %in% input$sex,
-             RACE %in% input$race)
-    
-    ggplot(filtered, aes(x = SEX, fill = RACE)) +
-      geom_bar(position = "stack") +
-      labs(
-        title = paste("Victim Gender-Race Distribution for", input$crime_type),
-        x = "Gender", y = "Number of Victims", fill = "Race"
-      ) +
-      theme_minimal()
-  })
-}
-
-# ==== Run App ====
-shinyApp(ui2, server2)</code></pre>
-<p>To get the shinylive-r working.</p>
-<ol type="1">
-<li>Make sure your shiny app works as a regular r chunk.</li>
-<li>Make sure that the chunk is completely self-contained. Meaning all packages and data are loaded inside that chunk. It can’t rely on any other chunks.</li>
-<li>For the data that you are using for shiny, copy the rds file or any other files into the scripts folder, and then publish your website.</li>
-<li>Where you load in your data, change it to use a URL to the data set which will now be on your website. Something like read_rds(“https://sussmanbu.github.io/ma-4615-fa24-final-project-group-a/scripts/dataset_for_shiny.rds”)</li>
-<li>Check that the chunk still works as a regular r chunk.</li>
-<li>Change it to a shinylive-r chunk.</li>
-<li>Commit and publish your work.</li>
-</ol>
-<p>I recommend keeping the data used for the shiny interactive relatively small, though this isn’t completely necessary.</p>
-<hr>
+<section id="who-gets-hurt-what-chicago-crime-data-reveals-about-racial-inequality" class="level1">
+<h1>Who Gets Hurt? What Chicago Crime Data Reveals About Racial Inequality</h1>
+<section id="thesis-goal" class="level2">
+<h2 class="anchored" data-anchor-id="thesis-goal">Thesis / Goal</h2>
+<p>In Chicago, crime doesn’t affect all communities equally. Our analysis shows that Black residents are significantly overrepresented among crime victims compared to their share of the population, while White residents are underrepresented. These disparities are not random—they reflect deep-rooted social inequities that shape who gets harmed, where, and how often.</p>
+</section>
+<section id="what-youre-looking-at" class="level2">
+<h2 class="anchored" data-anchor-id="what-youre-looking-at">What You’re Looking At</h2>
+<section id="figure-1-racial-representation-in-chicago-crime-victims-vs-population" class="level3">
+<h3 class="anchored" data-anchor-id="figure-1-racial-representation-in-chicago-crime-victims-vs-population">Figure 1: Racial Representation in Chicago – Crime Victims vs Population</h3>
+<p>This bar chart compares the racial makeup of crime victims to the general population in 2021, 2022, 2023. Red bars show the racial distribution of the total population (Census data). Blue bars show the racial breakdown of crime victims (Chicago Police Department data).</p>
+<p>Key Insight: Black Chicagoans make up a disproportionately large share of victims, far exceeding their share of the population. Conversely, White residents are underrepresented among victims. <img src="images/Interactice1.png" class="img-fluid" alt="Race Representation in Chicago: Crime Victims vs Population"> Interact with it <a href="https://yanyingh.shinyapps.io/dataset_for_shiny/">here</a></p>
+</section>
+<section id="figure-2-victim-demographics-for-robbery-by-gender-and-race" class="level3">
+<h3 class="anchored" data-anchor-id="figure-2-victim-demographics-for-robbery-by-gender-and-race">Figure 2: Victim Demographics for Robbery by Gender and Race</h3>
+<p>This interactive stacked bar chart lets you explore who is most affected by different types of crime. Use the filters to switch between crime types or focus on specific groups. Each bar shows the racial composition of male and female victims.</p>
+<p>Key Insight: For robbery, Black victims again dominate, regardless of gender. The racial imbalance outweighs gender differences, suggesting that systemic factors, like neighborhood exposure or policing patterns, which may be driving risk. <img src="images/Interactive2.png" class="img-fluid" alt="Victim Demographics by Crime Type"> Interact with it <a href="https://yanyingh.shinyapps.io/scripts/">here</a></p>
+</section>
+</section>
+<section id="why-it-matters" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-matters">Why It Matters</h2>
+<p>These visuals aren’t just numbers—they reflect how inequality plays out in everyday safety. If certain communities are consistently more exposed to harm, public policy, policing resources, and community support need to account for that. Understanding the mismatch between population and victimization helps spark more targeted and equitable solutions.</p>
 </section>
 <section id="rubric-on-this-page" class="level2">
 <h2 class="anchored" data-anchor-id="rubric-on-this-page">Rubric: On this page</h2>
@@ -335,6 +224,7 @@ shinyApp(ui2, server2)</code></pre>
 <p>The main title of your page is informative. Each post has an author/description/informative title. All lab required posts are present. Each page (including the home page) has a nice featured image associated with it. Your about page is up to date and clean. You have removed the generic posts from the initial site template.</p>
 
 
+</section>
 </section>
 </section>
 
