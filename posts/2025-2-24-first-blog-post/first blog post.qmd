@@ -5,7 +5,6 @@ description:  |
   This post is the first blog post for group 12. Here we introduces three public datasets to explore racial disparities in school attendance, adult depression, and violent crime victimization.
 author: "BHZZ"
 date: "2025-02-24"
-image: false
 categories: []
 date-modified: "2025-02-26"
 draft: FALSE

@@ -2,11 +2,9 @@
 title: "Second blog post"
 subtitle: ""
 description:  |
-  This post is the second blog post for group 12.
+  This post is the second blog post for group 12. Here we provided the data background for the dataset that we choose.
 author: "BHZZ"
 date: "2025-03-17"
-image: ""
-image-alt: ""
 categories: []
 date-modified: "2025-03-17"
 draft: FALSE
