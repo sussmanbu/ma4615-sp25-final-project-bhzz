@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="BHZZ">
+<meta name="dcterms.date" content="2025-04-30">
+<meta name="description" content="This blog post explains how we keep exploring the data by adding new information and looking for patterns in race, crime, and gender. It also shares our plan to improve charts and make the interactive tools easier to use and understand.">
 
-<title>Exploring Race and Gender Disparities in Chicago’s Violent Crime Data – MA [46]15 Final Project Group BHZZ</title>
+<title>Eighth blog post – MA [46]15 Final Project Group BHZZ</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +26,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +69,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">MA [46]15 Final Project Group BHZZ</span>
     </a>
   </div>
@@ -149,19 +92,19 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./big_picture.html"> 
+    <a class="nav-link" href="../../big_picture.html"> 
 <span class="menu-text">Big Picture</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./analysis.html"> 
+    <a class="nav-link" href="../../analysis.html"> 
 <span class="menu-text">Analysis</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./data.html"> 
+    <a class="nav-link" href="../../data.html"> 
 <span class="menu-text">Data</span></a>
   </li>  
 </ul>
@@ -174,297 +117,76 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Exploring Race and Gender Disparities in Chicago’s Violent Crime Data</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Eighth blog post</h1>
+                  <div>
+        <div class="description">
+          <p>This blog post explains how we keep exploring the data by adding new information and looking for patterns in race, crime, and gender. It also shares our plan to improve charts and make the interactive tools easier to use and understand.</p>
+        </div>
+      </div>
+                </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>BHZZ </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 30, 2025</p>
+      </div>
+    </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">April 30, 2025</p>
+      </div>
+    </div>
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-<p><img src="images/Chicago-crime.png" class="img-fluid"></p>
-<section id="final-project-due-may-5-2024-at-1159pm." class="level1">
-<h1>Final Project due May 5, 2024 at 11:59pm.</h1>
-<p>This comes from the <code>index.qmd</code> file.</p>
-
+<section id="data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis"><strong>Data analysis:</strong></h2>
+<ul>
+<li>We’re continuing our EDA by bringing in new data, like the 2023 ACS demographics, to compare with the crime victim data and better understand the disparities we’re seeing. We’re also using the interactive dashboards to dig deeper into patterns across year, crime type, gender, and race. Some things we’ve looked into haven’t shown much, but we’re still testing ideas like adding age or neighborhood to see if they reveal anything new.</li>
+</ul>
+</section>
+<section id="thesis" class="level2">
+<h2 class="anchored" data-anchor-id="thesis"><strong>Thesis:</strong></h2>
+<ul>
+<li>Our thesis is that violent crime in Chicago hits Black residents much harder compared to their share of the population, while White residents are underrepresented as victims. This pattern shows up consistently across years and different types of crime, and we see it as part of broader social inequalities in the city.</li>
+</ul>
+</section>
+<section id="visualizations-and-tables" class="level2">
+<h2 class="anchored" data-anchor-id="visualizations-and-tables"><strong>Visualizations and tables:</strong></h2>
+<ul>
+<li>We plan to improve our graphs by adding clear titles and captions to help people understand what they’re looking at, and we want to use annotations to highlight important trends or surprises in the data. For the interactive components, we already have filters and dropdown menus, but we’re planning to make them more user-friendly by adding better labels, improving the layout, and making sure the default views highlight the key patterns we want people to notice.</li>
+</ul>
 
 
 </section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="" data-listing-date-sort="1745985600000" data-listing-file-modified-sort="1746062461319" data-listing-date-modified-sort="1745985600000" data-listing-reading-time-sort="2" data-listing-word-count-sort="210">
-<div class="thumbnail">
-<p><a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external"></a></p><a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external">Eighth blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external">This blog post explains how we keep exploring the data by adding new information and looking for patterns in race, crime, and gender. It also shares our plan to improve charts and make the interactive tools easier to use and understand. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-4-30- eighth-blog-post/8thblogpost.html" class="no-external">
-<div class="listing-date">
-Apr 30, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="" data-listing-date-sort="1745294400000" data-listing-file-modified-sort="1745985849060" data-listing-date-modified-sort="1745294400000" data-listing-reading-time-sort="7" data-listing-word-count-sort="1274">
-<div class="thumbnail">
-<p><a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external"></a></p><a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external">
-<p><img loading="lazy" src="./posts/2025-4-22-seventh-blog-post/image1-blog7.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external">Seventh blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external">This blog post presents two interactive Shiny dashboards analyzing racial and gender disparities in Chicago crime victim data. Users can compare victim demographics with census data and explore patterns by crime type, sex, and race. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-4-22-seventh-blog-post/7thblogpost.html" class="no-external">
-<div class="listing-date">
-Apr 22, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="" data-listing-date-sort="1744603200000" data-listing-file-modified-sort="1746039258623" data-listing-date-modified-sort="1744603200000" data-listing-reading-time-sort="1" data-listing-word-count-sort="176">
-<div class="thumbnail">
-<p><a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external"></a></p><a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external">Sixth blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external">This blog post outlines the next priorities: completing an interactive Shiny dashboard and refining the Big Picture article to clearly communicate racial and gender disparities in Chicago crime data. Key next steps include polishing visual explanations, improving narrative flow, and finalizing the headline. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-4-22-sixth-blog-post/6thblogpost.html" class="no-external">
-<div class="listing-date">
-Apr 14, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="" data-listing-date-sort="1743998400000" data-listing-file-modified-sort="1745985425388" data-listing-date-modified-sort="1743998400000" data-listing-reading-time-sort="2" data-listing-word-count-sort="213">
-<div class="thumbnail">
-<p><a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external"></a></p><a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external">Fifth blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external">This blog post integrates Chicago crime data with 2023 census demographics to better understand racial and gender disparities in victimization. Initial findings highlight disproportionate impacts on Black individuals and women, with future steps focused on aligning race categories, merging datasets, and building visual analyses. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-4-7-fifth-blog-post/5thblogpost.html" class="no-external">
-<div class="listing-date">
-Apr 7, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="" data-listing-date-sort="1743393600000" data-listing-file-modified-sort="1745985028564" data-listing-date-modified-sort="1743393600000" data-listing-reading-time-sort="3" data-listing-word-count-sort="501">
-<div class="thumbnail">
-<p><a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external"></a></p><a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external">
-<p><img loading="lazy" src="./posts/2025-3-31-forth-blog-post/figure1.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external">Fourth blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external">This blog post uses visualizations and logistic regression to explore how gender and race intersect in shaping the risk of sexual assault victimization. Findings show that being female is the strongest predictor, with racial differences further refining the risk profile. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-3-31-forth-blog-post/4thBlogPost.html" class="no-external">
-<div class="listing-date">
-Mar 31, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="" data-listing-date-sort="1742529600000" data-listing-file-modified-sort="1745984880392" data-listing-date-modified-sort="1742529600000" data-listing-reading-time-sort="2" data-listing-word-count-sort="323">
-<div class="thumbnail">
-<p><a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external"></a></p><a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external">Third blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external">This blog post describes how missing demographic values were handled during data cleaning to ensure reliable analysis of violence trends. It also emphasizes the ethical use of data through equity principles, highlighting the need to protect privacy, avoid bias, and use findings responsibly to support fair and community-based violence prevention efforts. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-3-19-third-blog-post/third blog post.html" class="no-external">
-<div class="listing-date">
-Mar 21, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="" data-listing-date-sort="1742184000000" data-listing-file-modified-sort="1745984564270" data-listing-date-modified-sort="1742184000000" data-listing-reading-time-sort="2" data-listing-word-count-sort="376">
-<div class="thumbnail">
-<p><a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external"></a></p><a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external">Second blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external">This blog post examines violent crime data collected by the Chicago Police Department to understand trends in gun violence and its impact on different demographic groups. It also highlights key data limitations, such as underreporting and the exclusion of less frequent but significant crimes. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-3-17-second-blog-post/second blog post.html" class="no-external">
-<div class="listing-date">
-Mar 17, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="" data-listing-date-sort="1740373200000" data-listing-file-modified-sort="1745984360373" data-listing-date-modified-sort="1740546000000" data-listing-reading-time-sort="3" data-listing-word-count-sort="518">
-<div class="thumbnail">
-<p><a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external"></a></p><a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external">
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-</a><p><a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external">First blog post</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-
-</div>
-<div class="listing-description">
-<a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external">This post is the first blog post for group 12. Here we introduces three public datasets to explore racial disparities in school attendance, adult depression, and violent crime victimization. </a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-2-24-first-blog-post/first blog post.html" class="no-external">
-<div class="listing-date">
-Feb 24, 2025
-</div>
-<div class="listing-author">
-BHZZ
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
