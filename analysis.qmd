@@ -5,66 +5,145 @@ toc: true
 draft: false
 ---
 
+```{r}
+library(readr)
+library(tidyverse)
+Violence_clean_missing <- read_csv("dataset/Violence_clean_missing.csv")
+
+Violence <- Violence_clean_missing |>
+  filter(!SEX == "UNKNOWN") |>
+  filter(!RACE == "UNKNOWN") |>
+  filter(!RACE == "S")
+```
+
+
 ![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
 
-This comes from the file `analysis.qmd`.
 
-We describe here our detailed data analysis. This page will provide an overview of what questions you addressed, illustrations of relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question. You'll also reflect on next steps and further analysis.
+## **Motivation:**
 
-The audience for this page is someone like your class mates, so you can expect that they have some level of statistical and quantitative sophistication and understand ideas like linear and logistic regression, coefficients, confidence intervals, overfitting, etc. 
+Violent crime is a persistent issue in Chicago, with widespread concerns about how different communities are affected. Awareness and occurrences of discrimination-based crimes has been increasing in the last few decades. This analysis is focused on how race and gender correlate with being a victim of a violent crime in order to shed light on how social and systemic discrimination affects real-world safety and how these problems can be addressed.
 
-While the exact number of figures and tables will vary and depend on your analysis, you should target around 5 to 6. An overly long analysis could lead to losing points.
-If you want you can link back to your blog posts or create separate pages with more details.
+The variables of interest are:
 
-The style of this paper should aim to be that of an academic paper. 
-I don't expect this to be of publication quality but you should keep that aim in mind.
-Avoid using "we" too frequently, for example "We also found that ...". Describe your methodology and your findings but don't describe your whole process.
+    -   race of victim
+    -   sex of victim
+    -   type of violent crime
+    -   time period
+    -   age of victim
+    -   whether a victim has been shot
 
-### Example of loading data
+We are especially interested in examining the relationships between:
 
-The code below shows an example of loading the loan refusal data set (which you should delete at some point).
+    -   race and type of violent crime
+    -   sex and type of violent crime
+    -   age and type of violent crime
+    -   time period and type of violent crime
+
+**A preview of the dataset:**
 
 ```{r}
-library(tidyverse)
-print(getwd())
-data <- read_rds(here::here("dataset/loan_refusal_clean.rds"))
+tibble(Violence)
 ```
 
-## Note on Attribution
+## **Some visualizations:**
 
-In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
+1. **Examining the distribution of type of crime across races:**
 
-If you are directly quoting from a source, please make that clear. You can show long quotes using `>` like this
-
-```         
-> To be or not to be.
+```{r}
+Violence |>
+  ggplot(aes(x = PRIMARY_TYPE, fill = PRIMARY_TYPE)) +
+  geom_bar() +
+  facet_wrap(~RACE) +
+  theme(
+    axis.text.x = element_blank()
+  ) +
+  labs(
+    title = "Victims of violent crimes in Chicago, divided by race"
+  )
 ```
 
-> To be or not to be.
+This gives some insight about the relationship between race and type of violent crime. It is clear that Black people in Chicago are disproportionately affected by assault and battery.
 
-------------------------------------------------------------------------
+2. **Examining the distribution of type of crime among gender:**
 
-## Rubric: On this page
+```{r}
+Violence |>
+  ggplot(aes(x = PRIMARY_TYPE, fill = PRIMARY_TYPE)) +
+  geom_bar() +
+  facet_wrap(~SEX) +
+  theme(
+    axis.text.x = element_blank()
+  ) +
+  labs(
+    title = "Victims of violent crimes in Chicago, divided by sex"
+  )
 
-You will
+```
 
--   Introduce what motivates your Data Analysis (DA)
-    -   Which variables and relationships are you most interested in?
-    -   What questions are you interested in answering?
-    -   Provide context for the rest of the page. This will include figures/tables that illustrate aspects of the data of your question.
--   Modeling and Inference
-    -   The page will include some kind of formal statistical model. This could be a linear regression, logistic regression, or another modeling framework.
-    -   Explain the ideas and techniques you used to choose the predictors for your model. (Think about including interaction terms and other transformations of your variables.)
-    -   Describe the results of your modelling and make sure to give a sense of the uncertainty in your estimates and conclusions.
--   Explain the flaws and limitations of your analysis
-    -   Are there some assumptions that you needed to make that might not hold? Is there other data that would help to answer your questions?
--   Clarity Figures
-    -   Are your figures/tables/results easy to read, informative, without problems like overplotting, hard-to-read labels, etc?
-    -   Each figure should provide a key insight. Too many figures or other data summaries can detract from this. (While not a hard limit, around 5 total figures is probably a good target.)
-    -   Default `lm` output and plots are typically not acceptable.
--   Clarity of Explanations
-    -   How well do you explain each figure/result?
-    -   Do you provide interpretations that suggest further analysis or explanations for observed phenomenon?
--   Organization and cleanliness.
-    -   Make sure to remove excessive warnings, hide all code, organize with sections or multiple pages, use bullets, etc.
-    -   This page should be self-contained, i.e. provide a description of the relevant data.
+This gives insight as to which sexes experience each crime the most frequently. It is clear that men are more commonly victims of every violent crime except for sexual assault and human trafficking. There is also a staggering difference between how many men have experienced battery and homicide versus how many women have experienced it.
+
+3. **Examining the distribution of each crime across race AND sex:**
+
+```{r}
+Violence |>
+  ggplot(aes(x = PRIMARY_TYPE, fill = PRIMARY_TYPE)) +
+  geom_bar() +
+  facet_wrap(RACE ~ SEX) +
+  theme(
+    axis.text.x = element_blank()
+  ) +
+  labs(
+    title = "Victims of violent crimes in Chicago, divided by sex and race"
+  )
+```
+This table shows that among all the races and sexes, Black men are the most common group to be victims of violent crime, with Black women following closely behind.
+
+4. **Examining the distribution of each crime across age:**
+
+```{r}
+Violence |>
+  ggplot(aes(x = PRIMARY_TYPE, fill = PRIMARY_TYPE)) +
+  geom_bar() +
+  facet_wrap(SEX~AGE) +
+  theme(
+    axis.text.x = element_blank()
+  ) +
+  labs(
+    title = "Victims of violent crimes in Chicago, divided by sex and age group"
+  )
+```
+This table reveals that men aged 19 and under are the most likely to be a victim of a violent crime in Chicago, and women aged 19 and under follow closely behind.
+
+## **Modeling and Inference:**
+
+**Predicting whether a victim has sustained a gunshot injury:**
+
+Below is a logistic regression model that predicts whether or not a victim sustained a gunshot injury. This variable ("GUNSHOT_INJURY_I") is binomial, where "YES" means the victim sustained a gunshot injury, and "NO", The model is as follows:
+
+
+```{r}
+
+Violence$SEX <- as.factor(Violence$SEX)
+Violence$RACE <- as.factor(Violence$RACE)
+Violence$Year <- as.factor(Violence$Year)
+Violence$GUNSHOT_INJURY_I <- as.factor(Violence$GUNSHOT_INJURY_I)
+
+model_gunshot <- glm(GUNSHOT_INJURY_I ~ SEX + RACE + AGE,
+                     data = Violence,
+                     family = binomial)
+
+summary(model_gunshot)
+
+print(model_gunshot)
+
+```
+
+**Interpretations of the model:**
+
+The predictor variables (age group, sex, race) each affect the odds of whether or not the victim was shot. The "Intercepts" column gives a value for how much each predictor variable affects the odds. For example, "SEXM" = 0.25276, "RACEBLK" = 0.37543, and "AGE30-39" = -0.04596. This means the victim being male increases their odds of being a gunshot victim by a factor of about 0.25276, being black increases their odds by a factor of about 0.37543, and being within the age group of 30-39 decreases their odds by a factor of about 0.04596. The odds should fall somewhere between 0 and 1, where 0 indicates no chance of sustaining a gunshot injury, and 1 indicates 100% odds of sustaining a gunshot injury. The 'Error' column indicates the error margin of each intercept.
+
+
+## **Flaws and Limitations:**
+
+More detailed data that would be helpful includes the regions of the city where these crimes occurred. This could have helped with determining which areas are the most affected by crime. Having data of extra factors, such as context of the crime (i.e., domestic violence, gang-related violence, accidental crimes, police brutality, etc.) could have helped with analyzing why certain crimes against certain groups are more prevalent than others. Using only the given data forces the assumption that every part of the city is equally affected by crime, and anyone in any part of the city has equal odds of being a victim of a crime. Knowing more specific locations and contexts would have allowed for more accurate calculations and predictions.
