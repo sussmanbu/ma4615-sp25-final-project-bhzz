@@ -1,0 +1,23 @@
+---
+title: "Eighth blog post"
+subtitle: ""
+description:  |
+  This blog post explains how we keep exploring the data by adding new information and looking for patterns in race, crime, and gender. It also shares our plan to improve charts and make the interactive tools easier to use and understand. 
+author: "BHZZ"
+date: "2025-04-30"
+categories: []
+date-modified: "2025-04-30"
+draft: FALSE
+---
+
+## **Data analysis:**
+
+-   We’re continuing our EDA by bringing in new data, like the 2023 ACS demographics, to compare with the crime victim data and better understand the disparities we’re seeing. We’re also using the interactive dashboards to dig deeper into patterns across year, crime type, gender, and race. Some things we’ve looked into haven’t shown much, but we’re still testing ideas like adding age or neighborhood to see if they reveal anything new.
+
+## **Thesis:**
+
+-   Our thesis is that violent crime in Chicago hits Black residents much harder compared to their share of the population, while White residents are underrepresented as victims. This pattern shows up consistently across years and different types of crime, and we see it as part of broader social inequalities in the city.
+
+## **Visualizations and tables:**
+
+-   We plan to improve our graphs by adding clear titles and captions to help people understand what they’re looking at, and we want to use annotations to highlight important trends or surprises in the data. For the interactive components, we already have filters and dropdown menus, but we’re planning to make them more user-friendly by adding better labels, improving the layout, and making sure the default views highlight the key patterns we want people to notice.
