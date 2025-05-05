@@ -41,6 +41,22 @@ draft: false
 
 This section outlines the full data cleaning procedure used to prepare the Chicago violence victimization dataset for analysis.
 
+## Data Cleaning Script
+
+The full data cleaning process described above was implemented in an R script, which can be accessed here: [clean_data.R](scripts/clean_data.R).
+
+This script performs the following tasks:
+- Imports the original dataset.
+- Extracts and processes the year information.
+- Identifies and handles missing values, including special handling for `GUNSHOT_INJURY_I` based on dataset documentation.
+- Recodes racial categories to align with census data.
+- Filters rows with excessive missingness.
+- Saves the cleaned dataset as an `.rds` file for use in subsequent analysis.
+
+By reviewing the `clean_data.R` file, readers can verify the cleaning steps and reproduce the cleaned data used in this report.
+
+
+
 ### Cleaning Objectives
 
 The main goals of the cleaning process were to:
@@ -61,6 +77,11 @@ We used the following R packages beyond the base curriculum:
 ### Step 1: Import and Parse Data
 
 We imported the dataset and extracted the year from the `TIME_PERIOD` field for time-based analysis. This allowed us to align police data with census years for comparative studies.
+```{r,eval=FALSE}
+Violence_raw <- read_csv("Violence_Reduction_-_Victim_Demographics_-_Aggregated.csv")
+Violence_raw$Year <- substr(Violence_raw$TIME_PERIOD, 1, 4)
+```
+
 
 ### Step 2: Detect and Separate Unknown Values
 
@@ -68,19 +89,71 @@ We identified unknown entries in key demographic and incident-related variables,
 - A "clean" subset without any "UNKNOWN" values.
 - A "dirty" subset containing one or more "UNKNOWN" entries, for further investigation.
 
+```{r,eval=FALSE}
+cols_check <- c("AGE", "SEX", "RACE", "JUVENILE_I", 
+                "DOMESTIC_I", "GUNSHOT_INJURY_I", 
+                "NUMBER_OF_VICTIMS", "PRIMARY_TYPE")
+
+Violence_na <- Violence_raw %>%
+  filter(if_any(all_of(cols_check), ~ .x == "UNKNOWN"))
+
+Violence_clean <- Violence_raw %>%
+  filter(if_all(all_of(cols_check), ~ .x != "UNKNOWN"))
+```
+
+
 ### Step 3: Visualize Missingness
 
 We visualized the frequency of "UNKNOWN" entries across variables and per row. This allowed us to:
 - Identify that `GUNSHOT_INJURY_I` had a disproportionately high number of unknowns.
 - Detect that most rows had only one missing value.
 
+```{r,eval=FALSE}
+unknown_counts <- colSums(Violence_raw[, cols_check] == "UNKNOWN")
+unknown_df <- data.frame(Category = names(unknown_counts), Count = unknown_counts)
+
+ggplot(unknown_df, aes(x = Category, y = Count, fill = Category)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Count of UNKNOWN Values in Each Category",
+       x = "Category", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
 ### Step 4: Recode Structural Missingness
 
 According to the dataset documentation, shooting injury data before 2010 was not recorded for non-homicides and was marked as `"UNKNOWN"`. We recoded these values into a new category to distinguish them from truly missing data.
 
+```{r,eval=FALSE}
+Violence_na <- Violence_na %>%
+  mutate(Year = as.numeric(Year),
+         GUNSHOT_INJURY_I = ifelse(Year <= 2010 & GUNSHOT_INJURY_I == "UNKNOWN", 
+                                   "Before2010", 
+                                   GUNSHOT_INJURY_I))
+```
+
+
 ### Step 5: Examine Multi-Variable Missingness
 
 We examined rows with exactly two unknown fields and used heatmaps to detect patterns of co-missing values. We found that these records often reflected cases where individuals refused to provide demographic information, especially `RACE` and `SEX`.
+```{r,eval=FALSE}
+Violence_na$missing_count <- rowSums(Violence_na == "UNKNOWN")
+df_missing_2 <- Violence_na[Violence_na$missing_count == 2, ]
+
+vars <- c("AGE", "SEX", "RACE", "GUNSHOT_INJURY_I")
+missing_matrix <- matrix(0, nrow = 4, ncol = 4, dimnames = list(vars, vars))
+
+for (i in 1:nrow(df_missing_2)) {
+  missing_vars <- names(df_missing_2[i, ])[df_missing_2[i, ] == "UNKNOWN"]
+  if (length(missing_vars) == 2) {
+    missing_matrix[missing_vars[1], missing_vars[2]] <- missing_matrix[missing_vars[1], missing_vars[2]] + 1
+    missing_matrix[missing_vars[2], missing_vars[1]] <- missing_matrix[missing_vars[2], missing_vars[1]] + 1
+  }
+}
+```
+
+
 
 ### Step 6: Final Filtering
 
@@ -88,6 +161,35 @@ To ensure analytic validity, we:
 - Retained all rows with zero or one unknown value in the four critical columns (`AGE`, `SEX`, `RACE`, `GUNSHOT_INJURY_I`).
 - Removed rows with two or more unknowns.
 - Combined these cleaned rows with the previously clean dataset into a single final cleaned dataset.
+
+```{r,eval=FALSE}
+Violence_na <- Violence_na %>%
+  mutate(GUNSHOT_INJURY_I = ifelse(GUNSHOT_INJURY_I == "Before2010", "UNKNOWN", GUNSHOT_INJURY_I))
+
+Violence_na$missing_count <- rowSums(Violence_na == "UNKNOWN")
+
+Violence_filtered <- Violence_na %>%
+  filter(missing_count < 2) %>%
+  select(-missing_count)
+
+Violence_clean_missing <- bind_rows(Violence_clean, Violence_filtered)
+```
+
+### Visualizations of Victimization Patterns
+
+Figure 1 and Figure 2 provide visual insights into the relationship between victim demographics and the type of violent crime.
+
+**Figure 1**  shows the distribution of violent crime types across different genders. This visualization helps to identify whether certain crime types are disproportionately experienced by a specific gender group.
+
+![`sex vs type`](posts/2025-3-31-forth-blog-post/figure1.png)
+
+**Figure 2** (`race vs type`) illustrates the distribution of violent crime types across racial groups. By examining this figure, we can assess potential disparities in crime victimization patterns among different racial categories.
+
+![`race vs type`](posts/2025-3-31-forth-blog-post/figure2.png)
+
+These figures offer important context for understanding demographic trends in violent crime victimization and will inform subsequent statistical modeling.
+
+
 
 ### Renaming and Recoding
 
