@@ -2,12 +2,6 @@
 title: "Big Picture"
 editor: visual
 format: html
-extensions:
-  - shinylive
-shinylive:
-  components:
-    - shiny
-    - leaflet
 css:
   - styles.css
 toc: true
@@ -40,7 +34,7 @@ Red bars show the racial distribution of the total population (Census data).
 Blue bars show the racial breakdown of crime victims (Chicago Police Department data).
 
 Key Insight: Black Chicagoans make up a disproportionately large share of victims, far exceeding their share of the population. Conversely, White residents are underrepresented among victims.
-![Race Representation in Chicago: Crime Victims vs Population](images/Interactice1.png)
+
 Interact with it [here](https://yanyingh.shinyapps.io/dataset_for_shiny/)
 
 
@@ -50,7 +44,7 @@ Use the filters to switch between crime types or focus on specific groups.
 Each bar shows the racial composition of male and female victims.
 
 Key Insight: For robbery, Black victims again dominate, regardless of gender. The racial imbalance outweighs gender differences, suggesting that systemic factors, like neighborhood exposure or policing patterns, which may be driving risk.
-![Victim Demographics by Crime Type](images/Interactive2.png)
+
 Interact with it  [here](https://yanyingh.shinyapps.io/scripts/ )
 
 
@@ -58,8 +52,6 @@ Interact with it  [here](https://yanyingh.shinyapps.io/scripts/ )
 
 ## Why It Matters
 These visuals aren’t just numbers—they reflect how inequality plays out in everyday safety. If certain communities are consistently more exposed to harm, public policy, policing resources, and community support need to account for that. Understanding the mismatch between population and victimization helps spark more targeted and equitable solutions.
-
-
 
 
 
